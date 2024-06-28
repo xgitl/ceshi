@@ -13,6 +13,23 @@
 # Uncomment a feed source
 #sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
 
+# lean新版本batman-adv不支持旧版本内核，替换为旧版本的batman-adv，luci-app-guest-wifi依赖这个
+# sed -i '/routing/c\src-git routing https://github.com/coolsnowwolf/routing^160eae1216c166153f1c0d303f41f33ca0032c2c' feeds.conf.default
+
+# Git稀疏克隆，只克隆指定目录到本地
+function git_sparse_clone() {
+  branch="$1" repourl="$2" && shift 2
+  git clone --depth=1 -b $branch --single-branch --filter=blob:none --sparse $repourl
+  repodir=$(echo $repourl | awk -F '/' '{print $(NF)}')
+  cd $repodir && git sparse-checkout set $@
+  mv -f $@ ../package
+  cd .. && rm -rf $repodir
+}
+
 # Add a feed source
-echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
-#echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
+echo 'src-git OpenClash https://github.com/vernesong/OpenClash' >>feeds.conf.default
+# echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
+# echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
+# git clone --depth=1 https://github.com/ilxp/luci-app-ikoolproxy.git package/luci-app-ikoolproxy
+# git clone --depth=1 https://github.com/cnsilvan/luci-app-unblockneteasemusic.git package/neteasemusic
+git_sparse_clone main https://github.com/Lienol/openwrt-package luci-app-control-timewol
