@@ -35,7 +35,7 @@ on:
 #    types: started
 
 env:
-  REPO_URL: https://github.com/x-wrt/x-wrt
+  REPO_URL: https://github.com/coolsnowwolf/openwrt
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
