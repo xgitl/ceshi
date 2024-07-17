@@ -223,6 +223,9 @@ payload:
 " > feeds/OpenClash/luci-app-openclash/root/etc/openclash/rule_provider/gfw.yaml
 
 mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/config && touch feeds/OpenClash/luci-app-openclash/root/etc/openclash/config/config.yaml
-# mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/core
-# curl -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash_meta
-# chmod +x feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash*
+mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/core
+curl -sL -m 30 --retry 2 https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz -o /tmp/clash.tar.gz
+tar zxvf /tmp/clash.tar.gz -C /tmp >/dev/null 2>&1
+chmod +x /tmp/clash >/dev/null 2>&1
+mv /tmp/clash feeds/OpenClash/luci-app-openclash/root/etc/openclash/core >/dev/null 2>&1
+rm -rf /tmp/clash.tar.gz >/dev/null 2>&1
