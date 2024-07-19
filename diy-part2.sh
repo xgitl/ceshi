@@ -108,7 +108,7 @@ config groups
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '1200'
-	option tolerance '150'
+	option tolerance '50'
 	option old_name_cfg 'Proxy'
 	option old_name 'Proxy'
 
@@ -120,7 +120,7 @@ config groups
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '1200'
-	option tolerance '150'
+	option tolerance '50'
 	option policy_filter '^(?!.*(新加坡|SG|🇸🇬|Sing|马来西亚|MY|🇲🇾|Malaysia|澳大利亚|AU|🇦🇺|香港|HK|🇭🇰|Hong|澳门|MO|🇲🇴|Macao|日本|JP|🇯🇵|Japan|印度尼西亚|印尼|ID|🇮🇩|Indonesia|新西兰|NZ|🇳🇿|Zealand|越南|VN|🇻🇳|Viet)).*'
 	option old_name_cfg 'YouTube'
 	option old_name 'YouTube'
@@ -208,8 +208,9 @@ echo "
 
 echo "- MATCH,DIRECT" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
-rm -rf feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/metacubexd
-rm -rf feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/yacd
+rm -rf feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/*
+curl -sL https://codeload.github.com/MetaCubeX/Razord-meta/zip/refs/heads/gh-pages -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui
+mv feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/Razord-meta-gh-pages feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/dashboard && rm -rf /tmp/meta.zip
 rm -rf feeds/OpenClash/luci-app-openclash/root/etc/openclash/game_rules/*
 rm -rf feeds/OpenClash/luci-app-openclash/root/etc/openclash/rule_provider/*
 echo -n > feeds/OpenClash/luci-app-openclash/root/etc/openclash/accelerated-domains.china.conf
