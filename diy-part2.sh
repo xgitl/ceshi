@@ -74,8 +74,10 @@ exit 0
 EOF
 
 # Clash配置
-# 使用 Meta 内核，绕过中国大陆 IP，自动更新大陆白名单，启用 TCP 并发
-sed -i "/enable_meta_core/s/'.*'/'1'\n\toption china_ip_route '1'\n\toption chnr_auto_update '1'\n\toption enable_tcp_concurrent '1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+# 使用 Meta 内核，绕过中国大陆 IP，自动更新大陆白名单，启用 TCP 并发，启用流量（域名）探测，探测（嗅探）纯 IP 连接
+sed -i "/enable_meta_core/s/'.*'/'1'\n\toption china_ip_route '1'\n\toption chnr_auto_update '1'\n\toption enable_tcp_concurrent '1'\n\toption enable_meta_sniffer '1'\n\toption enable_meta_sniffer_pure_ip '1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+# 设为fake-ip模式
+sed -i 's/redir-host/fake-ip/g' feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # 仅允许常用端口流量
 sed -i "/common_ports/s/'.*'/'21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # 允许 IPv6 类型 DNS 解析
@@ -119,7 +121,7 @@ config groups
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '1200'
 	option tolerance '150'
-	option policy_filter '^(?!.*(新加坡|SG|🇸🇬|Sing|马来西亚|MY|🇲🇾|Malaysia|澳大利亚|AU|🇦🇺|香港|HK|Hong|🇭🇰|澳门|MO|🇲🇴|Macao|日本|JP|🇯🇵|Japan|印度尼西亚|印尼|ID|🇮🇩|Indonesia|新西兰|NZ|🇳🇿|Zealand|越南|VN|🇻🇳|Viet)).*'
+	option policy_filter '^(?!.*(新加坡|SG|🇸🇬|Sing|马来西亚|MY|🇲🇾|Malaysia|澳大利亚|AU|🇦🇺|香港|HK|🇭🇰|Hong|澳门|MO|🇲🇴|Macao|日本|JP|🇯🇵|Japan|印度尼西亚|印尼|ID|🇮🇩|Indonesia|新西兰|NZ|🇳🇿|Zealand|越南|VN|🇻🇳|Viet)).*'
 	option old_name_cfg 'YouTube'
 	option old_name 'YouTube'
 
@@ -223,9 +225,6 @@ payload:
 " > feeds/OpenClash/luci-app-openclash/root/etc/openclash/rule_provider/gfw.yaml
 
 mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/config && touch feeds/OpenClash/luci-app-openclash/root/etc/openclash/config/config.yaml
-mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/core
-curl -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz -o /tmp/clash_meta.tar.gz
-tar zxvf /tmp/clash_meta.tar.gz -C /tmp >/dev/null 2>&1
-chmod +x /tmp/clash >/dev/null 2>&1
-mv /tmp/clash feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash_meta >/dev/null 2>&1
-rm -rf /tmp/clash_meta.tar.gz >/dev/null 2>&1
+# mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/core
+# curl -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash_meta
+# chmod +x feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash*
