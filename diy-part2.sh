@@ -74,8 +74,8 @@ exit 0
 EOF
 
 # Clash配置
-# 使用 Meta 内核，绕过中国大陆 IP，自动更新大陆白名单，启用 TCP 并发，启用流量（域名）探测，探测（嗅探）纯 IP 连接
-sed -i "/enable_meta_core/s/'.*'/'1'\n\toption china_ip_route '1'\n\toption chnr_auto_update '1'\n\toption enable_tcp_concurrent '1'\n\toption enable_meta_sniffer '1'\n\toption enable_meta_sniffer_pure_ip '1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+# 使用 Meta 内核，绕过中国大陆 IP，WAN 接口名称，LAN 接口名称，自动更新大陆白名单，启用 TCP 并发，启用流量（域名）探测，探测（嗅探）纯 IP 连接
+sed -i "/enable_meta_core/s/'.*'/'1'\n\toption china_ip_route '1'\n\tlist intranet_allowed_wan_name 'pppoe-wan'\n\toption lan_interface_name 'eth0.1'\n\toption chnr_auto_update '1'\n\toption enable_tcp_concurrent '1'\n\toption enable_meta_sniffer '1'\n\toption enable_meta_sniffer_pure_ip '1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # 设为fake-ip模式
 sed -i 's/redir-host/fake-ip/g' feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # 仅允许常用端口流量
