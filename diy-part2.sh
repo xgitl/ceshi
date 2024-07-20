@@ -79,8 +79,6 @@ sed -i "/enable_meta_core/s/'.*'/'1'\n\toption stack_type 'mixed'\n\toption chin
 # 设为fake-ip模式 			
 sed -i "/operation_mode/s/'.*'/'fake-ip'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 sed -i "/redir-host/s/'.*'/'fake-ip-mix'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
-# 仅允许常用端口流量
-sed -i "/common_ports/s/'.*'/'21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # 允许 IPv6 类型 DNS 解析
 sed -i "/ipv6_dns/s/'.*'/'1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # 自定义上游 DNS 服务器
