@@ -74,16 +74,14 @@ exit 0
 EOF
 
 # Clash配置
-# 使用 Meta 内核，绕过中国大陆 IP，WAN 接口名称，自动更新大陆白名单，启用流量（域名）探测，探测（嗅探）纯 IP 连接
-sed -i "/enable_meta_core/s/'.*'/'1'\n\toption china_ip_route '1'\n\tlist intranet_allowed_wan_name 'pppoe-wan'\n\toption chnr_auto_update '1'\n\toption enable_meta_sniffer '1'\n\toption enable_meta_sniffer_pure_ip '1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+# 使用 Meta 内核，绕过中国大陆 IP，WAN 接口名称，自动更新大陆白名单
+sed -i "/enable_meta_core/s/'.*'/'1'\n\toption china_ip_route '1'\n\tlist intranet_allowed_wan_name 'pppoe-wan'\n\toption chnr_auto_update '1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # 仅允许常用端口流量
 sed -i "/common_ports/s/'.*'/'21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # 自定义上游 DNS 服务器
 sed -i "/enable_custom_dns/s/'.*'/'1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # Nameserver-Policy
 sed -i "/custom_name_policy/s/'.*'/'1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
-# 仅代理命中规则流量
-sed -i "/enable_rule_proxy/s/'.*'/'1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # 自定义规则
 sed -i "/enable_custom_clash_rules/s/'.*'/'1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 
@@ -138,6 +136,18 @@ config rule_providers
 config rule_providers
 	option enabled '1'
 	option config 'all'
+	option name 'Download'
+	option type 'http'
+	option behavior 'classical'
+	option format 'yaml'
+	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PrivateTracker/PrivateTracker_No_Resolve.yaml'
+	option interval '86400'
+	option position '1'
+	option group 'DIRECT'
+
+config rule_providers
+	option enabled '1'
+	option config 'all'
 	option name 'dl'
 	option type 'http'
 	option behavior 'classical'
@@ -174,30 +184,18 @@ config rule_providers
 config rule_providers
 	option enabled '1'
 	option config 'all'
-	option name 'Twitter'
+	option name 'Global'
 	option type 'http'
 	option behavior 'classical'
 	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter_No_Resolve.yaml'
-	option interval '86400'
-	option position '1'
-	option group 'Proxy'
-
-config rule_providers
-	option enabled '1'
-	option config 'all'
-	option name 'Proxy'
-	option type 'http'
-	option behavior 'classical'
-	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Proxy/Proxy_No_Resolve.yaml'
+	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Global/Global_No_Resolve.yaml'
 	option interval '86400'
 	option position '1'
 	option group 'Proxy'
 " >> feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 
 echo "
-'rule-set:dl,YouTube,gfw,Twitter,Proxy': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
+'rule-set:dl,YouTube,gfw,Proxy': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
 echo "- MATCH,DIRECT" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
