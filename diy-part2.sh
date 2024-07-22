@@ -97,7 +97,7 @@ EOI
 exit 0
 EOF
 
-echo "
+echo -n "
 config groups
 	option enabled '1'
 	option config 'all'
