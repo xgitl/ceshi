@@ -196,11 +196,9 @@ config rule_providers
 	option group 'Proxy'
 " >> feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 
-echo "
-'rule-set:dl,YouTube,gfw,Twitter,Proxy': [1.1.1.1, 8.8.8.8, 208.67.222.222]
-" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
+echo -n "'rule-set:dl,YouTube,gfw,Twitter,Proxy': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
-echo "- MATCH,DIRECT" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
+echo -n "- MATCH,DIRECT" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
 rm -rf feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/*
 curl -sL https://codeload.github.com/MetaCubeX/Razord-meta/zip/refs/heads/gh-pages -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui
@@ -213,11 +211,11 @@ echo -n > feeds/OpenClash/luci-app-openclash/root/etc/openclash/china_ip_route.i
 echo -n > feeds/OpenClash/luci-app-openclash/root/etc/openclash/china_ip6_route.ipset
 echo -n > feeds/OpenClash/luci-app-openclash/root/etc/openclash/GeoSite.dat
 
-echo "
+cat << EOF > feeds/OpenClash/luci-app-openclash/root/etc/openclash/rule_provider/gfw.yaml
 payload:
   - '+.github.com'
   - '+.githubusercontent.com'
-" > feeds/OpenClash/luci-app-openclash/root/etc/openclash/rule_provider/gfw.yaml
+EOF
 
 mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/config && touch feeds/OpenClash/luci-app-openclash/root/etc/openclash/config/config.yaml
 # mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/core
