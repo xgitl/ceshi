@@ -174,28 +174,16 @@ config rule_providers
 	option config 'all'
 	option name 'gfw'
 	option type 'http'
-	option behavior 'domain'
-	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt'
-	option interval '86400'
-	option position '1'
-	option group 'Proxy'
-
-config rule_providers
-	option enabled '1'
-	option config 'all'
-	option name 'Global'
-	option type 'http'
 	option behavior 'classical'
 	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Global/Global_No_Resolve.yaml'
+	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Global/Global_Classical_No_Resolve.yaml'
 	option interval '86400'
 	option position '1'
 	option group 'Proxy'
 " >> feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 
 echo "
-'rule-set:dl,YouTube,gfw,Proxy': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
+'rule-set:dl,YouTube,gfw': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
 echo "- MATCH,DIRECT" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
