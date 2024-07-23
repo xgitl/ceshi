@@ -75,7 +75,7 @@ EOF
 
 # Clash配置
 # 使用 Meta 内核，绕过中国大陆 IP，WAN 接口名称，自动更新大陆白名单
-sed -i "/enable_meta_core/s/'.*'/'1'\n\toption china_ip_route '1'\n\tlist intranet_allowed_wan_name 'pppoe-wan'\n\toption chnr_auto_update '1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+sed -i "/enable_meta_core/s/'.*'/'1'\n\toption china_ip_route '1'\n\tlist intranet_allowed_wan_name 'pppoe-wan'\n\toption lan_interface_name 'eth0.1'\n\toption chnr_auto_update '1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # 仅允许常用端口流量
 sed -i "/common_ports/s/'.*'/'21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # 自定义上游 DNS 服务器
