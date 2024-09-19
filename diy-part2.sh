@@ -68,6 +68,9 @@ EOF
 # Clash配置
 # 绕过服务器地址，绕过中国大陆 IP，WAN 接口名称，UDP 流量转发，绕过中国大陆 IPv6，自动更新大陆白名单
 sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\tlist intranet_allowed_wan_name 'pppoe-wan'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption chnr_auto_update '1'" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+# 使用 Redir-Host 模式
+sed -i "/en_mode/s/'.*'/'redir-host'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+sed -i "/operation_mode/s/'.*'/'redir-host'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # 仅允许常用端口流量
 sed -i "/common_ports/s/'.*'/'21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 # IPv6 流量代理
@@ -201,6 +204,6 @@ payload:
 EOF
 
 mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/config && touch feeds/OpenClash/luci-app-openclash/root/etc/openclash/config/config.yaml
-mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/core
-curl -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash_meta
-chmod +x feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash*
+# mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/core
+# curl -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash_meta
+# chmod +x feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash*
