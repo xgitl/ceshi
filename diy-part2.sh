@@ -204,6 +204,6 @@ payload:
 EOF
 
 mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/config && touch feeds/OpenClash/luci-app-openclash/root/etc/openclash/config/config.yaml
-# mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/core
-# curl -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash_meta
-# chmod +x feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash*
+mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/core
+curl -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash_meta
+chmod +x feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash*
