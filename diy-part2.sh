@@ -182,7 +182,7 @@ config rule_providers
 " >> feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
 
 echo "
-'＋.accounts.google.com': [114.114.114.114, 119.29.29.29, 223.5.5.5]
+'+.accounts.google.com': [114.114.114.114, 119.29.29.29, 223.5.5.5]
 'rule-set:dl,YouTube,gfw': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
 echo "- MATCH,DIRECT" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
