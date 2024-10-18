@@ -270,8 +270,8 @@ echo "
 echo "- MATCH,DIRECT" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
 rm -rf feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/*
-curl -sL https://codeload.github.com/MetaCubeX/Razord-meta/zip/refs/heads/gh-pages -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui
-mv feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/Razord-meta-gh-pages feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/dashboard && rm -rf /tmp/meta.zip
+curl -sL https://codeload.github.com/MetaCubeX/metacubexd/zip/refs/heads/gh-pages -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui
+mv feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/metacubexd-gh-pages feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/metacubexd && rm -rf /tmp/meta.zip
 rm -rf feeds/OpenClash/luci-app-openclash/root/etc/openclash/game_rules/*
 rm -rf feeds/OpenClash/luci-app-openclash/root/etc/openclash/rule_provider/*
 echo -n > feeds/OpenClash/luci-app-openclash/root/etc/openclash/accelerated-domains.china.conf
