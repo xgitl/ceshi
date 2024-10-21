@@ -146,7 +146,7 @@ config groups
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '3000'
 	option tolerance '30'
-	option policy_filter '(?i)(美国|US|🇺🇸|America)'
+	option policy_filter '(?i)(美国|US|🇺🇸|America|States)'
 	option old_name_cfg '美国'
 	option old_name '美国'
 
