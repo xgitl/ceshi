@@ -16,10 +16,6 @@
 # lean新版本batman-adv不支持旧版本内核，替换为旧版本的batman-adv，luci-app-guest-wifi依赖这个
 # sed -i '/routing/c\src-git routing https://github.com/coolsnowwolf/routing^160eae1216c166153f1c0d303f41f33ca0032c2c' feeds.conf.default
 
-# 切换到 lua 18.06
-sed -i '/luci/s/.*src-git/src-git/' feeds.conf.default
-sed -i '/luci.git;openwrt/s/^/#/' feeds.conf.default
-
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {
   branch="$1" repourl="$2" && shift 2
