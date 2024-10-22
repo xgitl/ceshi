@@ -46,7 +46,7 @@ sed -i "/encryption/s/'.*'/'none'/" feeds/luci/applications/luci-app-guest-wifi/
 
 # 删除插件
 # rm -rf feeds/packages/multimedia/UnblockNeteaseMusic
-rm -rf feeds/luci/applications/luci-app-openclash
+# rm -rf feeds/luci/applications/luci-app-openclash
 
 cat << EOF > package/base-files/files/etc/uci-defaults/99-custom
 uci -q batch << EOI
@@ -288,6 +288,6 @@ payload:
 EOF
 
 mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/config && touch feeds/OpenClash/luci-app-openclash/root/etc/openclash/config/config.yaml
-mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/core
-curl -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash_meta
-chmod +x feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash*
+# mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/core
+# curl -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash_meta
+# chmod +x feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash*
