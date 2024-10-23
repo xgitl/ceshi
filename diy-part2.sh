@@ -47,6 +47,7 @@ sed -i "/encryption/s/'.*'/'none'/" feeds/luci/applications/luci-app-guest-wifi/
 # 删除插件
 # rm -rf feeds/packages/multimedia/UnblockNeteaseMusic
 rm -rf feeds/luci/applications/luci-app-openclash
+rm -rf package/feeds/luci/luci-app-openclash
 
 cat << EOF > package/base-files/files/etc/uci-defaults/99-custom
 uci -q batch << EOI
