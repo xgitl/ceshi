@@ -47,6 +47,7 @@ sed -i "/encryption/s/'.*'/'none'/" feeds/luci/applications/luci-app-guest-wifi/
 # 删除插件
 # rm -rf feeds/packages/multimedia/UnblockNeteaseMusic
 cd openwrt && ./scripts/feeds uninstall luci-app-openclash
+git clone --depth 1 --branch dev https://github.com/vernesong/openclash package/openclash
 cd openwrt && ./scripts/feeds install -a -p OpenClash
 
 cat << EOF > package/base-files/files/etc/uci-defaults/99-custom
