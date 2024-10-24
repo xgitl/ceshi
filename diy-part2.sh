@@ -48,6 +48,7 @@ sed -i "/encryption/s/'.*'/'none'/" feeds/luci/applications/luci-app-guest-wifi/
 # rm -rf feeds/packages/multimedia/UnblockNeteaseMusic
 rm -rf feeds/luci/applications/luci-app-openclash
 rm -rf package/feeds/luci/luci-app-openclash
+cd openwrt && ./scripts/feeds install -a
 
 cat << EOF > package/base-files/files/etc/uci-defaults/99-custom
 uci -q batch << EOI
