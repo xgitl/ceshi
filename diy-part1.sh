@@ -16,10 +16,6 @@
 # lean新版本batman-adv不支持旧版本内核，替换为旧版本的batman-adv，luci-app-guest-wifi依赖这个
 # sed -i '/routing/c\src-git routing https://github.com/coolsnowwolf/routing^160eae1216c166153f1c0d303f41f33ca0032c2c' feeds.conf.default
 
-# 切换为 lua
-sed -i '/luci/s/.*src-git/src-git/' feeds.conf.default
-sed -i '/luci.git;openwrt/s/^/#/' feeds.conf.default
-
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {
   branch="$1" repourl="$2" && shift 2
@@ -31,8 +27,8 @@ function git_sparse_clone() {
 }
 
 # Add a feed source
-echo 'src-git openclash https://github.com/vernesong/openclash' >>feeds.conf.default
-# echo 'src-git openclash https://github.com/vernesong/openclash;dev' >>feeds.conf.default
+# echo 'src-git openclash https://github.com/vernesong/openclash' >>feeds.conf.default
+echo 'src-git openclash https://github.com/vernesong/openclash;dev' >>feeds.conf.default
 # echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 # echo 'src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages' >>feeds.conf.default
 # echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
