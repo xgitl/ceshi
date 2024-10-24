@@ -28,7 +28,7 @@ function git_sparse_clone() {
 
 # Add a feed source
 # echo 'src-git openclash https://github.com/vernesong/openclash' >>feeds.conf.default
-echo 'src-git openclash https://github.com/vernesong/openclash;dev' >>feeds.conf.default
+# echo 'src-git openclash https://github.com/vernesong/openclash;dev' >>feeds.conf.default
 # echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 # echo 'src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages' >>feeds.conf.default
 # echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
