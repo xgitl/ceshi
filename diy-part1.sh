@@ -31,11 +31,11 @@ function git_sparse_clone() {
 }
 
 # Add a feed source
-echo 'src-git openclash https://github.com/vernesong/openclash' >>feeds.conf.default
-# echo 'src-git openclash https://github.com/vernesong/openclash;dev' >>feeds.conf.default
-echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
-echo 'src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages' >>feeds.conf.default
-# echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
+sed -i '1i src-git openclash https://github.com/vernesong/openclash' feeds.conf.default
+# sed -i '1i src-git openclash https://github.com/vernesong/openclash;dev' feeds.conf.default
+# sed -i '1i src-git passwall https://github.com/xiaorouji/openwrt-passwall' feeds.conf.default
+# sed -i '1i src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages' feeds.conf.default
+# sed -i '1i src-git helloworld https://github.com/fw876/helloworld' feeds.conf.default
 # git clone --depth=1 https://github.com/ilxp/luci-app-ikoolproxy.git package/luci-app-ikoolproxy
 # git clone --depth=1 https://github.com/cnsilvan/luci-app-unblockneteasemusic.git package/neteasemusic
 git_sparse_clone main https://github.com/Lienol/openwrt-package luci-app-control-timewol
