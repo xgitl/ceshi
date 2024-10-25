@@ -67,24 +67,24 @@ EOF
 
 # Clash配置
 # 绕过服务器地址，绕过中国大陆 IP，WAN 接口名称，UDP 流量转发，绕过中国大陆 IPv6，自动更新大陆白名单
-sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\tlist intranet_allowed_wan_name 'pppoe-wan'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption chnr_auto_update '1'" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\tlist intranet_allowed_wan_name 'pppoe-wan'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption chnr_auto_update '1'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 使用 Redir-Host 模式
-sed -i "/en_mode/s/'.*'/'redir-host'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
-sed -i "/operation_mode/s/'.*'/'redir-host'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+sed -i "/en_mode/s/'.*'/'redir-host'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+sed -i "/operation_mode/s/'.*'/'redir-host'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 仅允许常用端口流量
-sed -i "/common_ports/s/'.*'/'21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+sed -i "/common_ports/s/'.*'/'21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # IPv6 流量代理
-sed -i "/ipv6_enable/s/'.*'/'1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+sed -i "/ipv6_enable/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 允许 IPv6 类型 DNS 解析
-sed -i "/ipv6_dns/s/'.*'/'1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+sed -i "/ipv6_dns/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 自定义上游 DNS 服务器
-sed -i "/enable_custom_dns/s/'.*'/'1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+sed -i "/enable_custom_dns/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # Nameserver-Policy
-sed -i "/custom_name_policy/s/'.*'/'1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+sed -i "/custom_name_policy/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 自定义规则
-sed -i "/enable_custom_clash_rules/s/'.*'/'1'/" feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+sed -i "/enable_custom_clash_rules/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 
-cat << EOF > feeds/OpenClash/luci-app-openclash/root/etc/uci-defaults/98-custom
+cat << EOF > feeds/openclash/luci-app-openclash/root/etc/uci-defaults/98-custom
 uci -q batch << EOI
 set openclash.config.enable='0'
 set openclash.@dns_servers[6].enabled='1'
@@ -273,32 +273,32 @@ config rule_providers
 	option interval '86400'
 	option position '1'
 	option group 'Proxy'
-" >> feeds/OpenClash/luci-app-openclash/root/etc/config/openclash
+" >> feeds/openclash/luci-app-openclash/root/etc/config/openclash
 
 echo "
 '+.accounts.google.com': [114.114.114.114, 119.29.29.29, 223.5.5.5]
-'rule-set:dl,YouTube,gfw': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
+'rule-set:dl,YouTube,gfw': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
-echo "- MATCH,DIRECT" >> feeds/OpenClash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
+echo "- MATCH,DIRECT" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
-rm -rf feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/*
-curl -sL https://codeload.github.com/MetaCubeX/metacubexd/zip/refs/heads/gh-pages -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui
-mv feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/metacubexd-gh-pages feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/metacubexd && rm -rf /tmp/meta.zip
-rm -rf feeds/OpenClash/luci-app-openclash/root/etc/openclash/game_rules/*
-rm -rf feeds/OpenClash/luci-app-openclash/root/etc/openclash/rule_provider/*
-echo -n > feeds/OpenClash/luci-app-openclash/root/etc/openclash/accelerated-domains.china.conf
-echo -n > feeds/OpenClash/luci-app-openclash/root/etc/openclash/Country.mmdb
-echo -n > feeds/OpenClash/luci-app-openclash/root/etc/openclash/china_ip_route.ipset
-echo -n > feeds/OpenClash/luci-app-openclash/root/etc/openclash/china_ip6_route.ipset
-echo -n > feeds/OpenClash/luci-app-openclash/root/etc/openclash/GeoSite.dat
+rm -rf feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/*
+curl -sL https://codeload.github.com/MetaCubeX/metacubexd/zip/refs/heads/gh-pages -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui
+mv feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/metacubexd-gh-pages feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/metacubexd && rm -rf /tmp/meta.zip
+rm -rf feeds/openclash/luci-app-openclash/root/etc/openclash/game_rules/*
+rm -rf feeds/openclash/luci-app-openclash/root/etc/openclash/rule_provider/*
+echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/accelerated-domains.china.conf
+echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/Country.mmdb
+echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/china_ip_route.ipset
+echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/china_ip6_route.ipset
+echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/GeoSite.dat
 
-cat << EOF > feeds/OpenClash/luci-app-openclash/root/etc/openclash/rule_provider/gfw.yaml
+cat << EOF > feeds/openclash/luci-app-openclash/root/etc/openclash/rule_provider/gfw.yaml
 payload:
 - DOMAIN-SUFFIX,github.com
 - DOMAIN-SUFFIX,githubusercontent.com
 EOF
 
-mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/config && touch feeds/OpenClash/luci-app-openclash/root/etc/openclash/config/config.yaml
-mkdir -p feeds/OpenClash/luci-app-openclash/root/etc/openclash/core
-curl -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash_meta
-chmod +x feeds/OpenClash/luci-app-openclash/root/etc/openclash/core/clash*
+mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/config && touch feeds/openclash/luci-app-openclash/root/etc/openclash/config/config.yaml
+mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
+curl -sL https://raw.githubusercontent.com/vernesong/openclash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash_meta
+chmod +x feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash*
