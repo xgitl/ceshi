@@ -282,8 +282,8 @@ echo "
 echo "- MATCH,DIRECT" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
 rm -rf feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/*
-curl -sL https://codeload.github.com/MetaCubeX/metacubexd/zip/refs/heads/gh-pages -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui
-mv feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/metacubexd-gh-pages feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/metacubexd && rm -rf /tmp/meta.zip
+curl -sL https://codeload.github.com/MetaCubeX/Razord-meta/zip/refs/heads/gh-pages -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui
+mv feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/Razord-meta-gh-pages feeds/OpenClash/luci-app-openclash/root/usr/share/openclash/ui/dashboard && rm -rf /tmp/meta.zip
 rm -rf feeds/openclash/luci-app-openclash/root/etc/openclash/game_rules/*
 rm -rf feeds/openclash/luci-app-openclash/root/etc/openclash/rule_provider/*
 echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/accelerated-domains.china.conf
@@ -299,6 +299,6 @@ payload:
 EOF
 
 mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/config && touch feeds/openclash/luci-app-openclash/root/etc/openclash/config/config.yaml
-# mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
-# curl -sL https://raw.githubusercontent.com/vernesong/openclash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash_meta
-# chmod +x feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash*
+mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
+curl -sL https://raw.githubusercontent.com/vernesong/openclash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash_meta
+chmod +x feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash*
