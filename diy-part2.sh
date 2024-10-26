@@ -305,6 +305,7 @@ echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/GeoSite.dat
 
 cat << EOF > feeds/openclash/luci-app-openclash/root/etc/openclash/rule_provider/gfw.yaml
 payload:
+- DOMAIN-SUFFIX,github.io
 - DOMAIN-SUFFIX,github.com
 - DOMAIN-SUFFIX,githubusercontent.com
 EOF
