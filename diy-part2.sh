@@ -229,11 +229,23 @@ config rule_providers
 config rule_providers
 	option enabled '1'
 	option config 'all'
-	option name 'dl'
+	option name 'dl1'
 	option type 'http'
 	option behavior 'classical'
 	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dl.yaml'
+	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dl1.yaml'
+	option interval '864000'
+	option position '1'
+	option group 'Proxy'
+
+config rule_providers
+	option enabled '1'
+	option config 'all'
+	option name 'dl2'
+	option type 'http'
+	option behavior 'classical'
+	option format 'yaml'
+	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dl2.yaml'
 	option interval '864000'
 	option position '1'
 	option group 'Proxy'
@@ -276,8 +288,7 @@ config rule_providers
 " >> feeds/openclash/luci-app-openclash/root/etc/config/openclash
 
 echo "
-'+.accounts.google.com': [114.114.114.114, 119.29.29.29, 223.5.5.5]
-'rule-set:dl,YouTube,gfw': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
+'rule-set:dl1,YouTube,gfw': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
 echo "- MATCH,DIRECT" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
@@ -299,6 +310,6 @@ payload:
 EOF
 
 mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/config && touch feeds/openclash/luci-app-openclash/root/etc/openclash/config/config.yaml
-mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
-curl -sL https://raw.githubusercontent.com/vernesong/openclash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash_meta
-chmod +x feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash*
+# mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
+# curl -sL https://raw.githubusercontent.com/vernesong/openclash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash_meta
+# chmod +x feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash*
