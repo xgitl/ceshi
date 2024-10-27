@@ -229,11 +229,11 @@ config rule_providers
 config rule_providers
 	option enabled '1'
 	option config 'all'
-	option name 'dl1'
+	option name 'dl'
 	option type 'http'
 	option behavior 'classical'
 	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dl1.yaml'
+	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dl.yaml'
 	option interval '864000'
 	option position '1'
 	option group 'Proxy'
@@ -288,7 +288,7 @@ config rule_providers
 " >> feeds/openclash/luci-app-openclash/root/etc/config/openclash
 
 echo "
-'rule-set:dl1,YouTube,gfw': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
+'rule-set:dl,YouTube,gfw': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
 echo "- MATCH,DIRECT" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
