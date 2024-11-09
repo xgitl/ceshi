@@ -18,7 +18,7 @@
 
 # 切换为 lua
 sed -i '/luci/s/.*src-git/src-git/' feeds.conf.default
-sed -i '/luci.git;openwrt/s/^/#/' feeds.conf.default
+sed -i '/luci.git;/s/^/#/' feeds.conf.default
 
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {
