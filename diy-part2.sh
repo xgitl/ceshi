@@ -172,7 +172,7 @@ config groups
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '3000'
 	option tolerance '30'
-	option policy_filter '(?i)(台湾|TW|🇹🇼|Taiwan)'
+	option policy_filter '(?i)(台湾|TW|🇹🇼|Tai)'
 	option old_name_cfg '台湾'
 	option old_name '台湾'
 
