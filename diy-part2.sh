@@ -11,7 +11,7 @@
 #
 
 # 修改固件内核版本
-sed -i '/KERNEL_PATCHVER:=/c\KERNEL_PATCHVER:=5.4' target/linux/ramips/Makefile
+# sed -i '/KERNEL_PATCHVER:=/c\KERNEL_PATCHVER:=5.4' target/linux/x86/Makefile
 # 修改固件名显示内核版本
 sed -i 's/IMG_PREFIX:=/IMG_PREFIX:=$(LINUX_VERSION)-/g' include/image.mk
 # 修改默认IP
@@ -311,6 +311,6 @@ payload:
 EOF
 
 mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/config && touch feeds/openclash/luci-app-openclash/root/etc/openclash/config/config.yaml
-mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
-curl -sL https://raw.githubusercontent.com/vernesong/openclash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash_meta
-chmod +x feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash*
+# mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
+# curl -sL https://raw.githubusercontent.com/vernesong/openclash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash_meta
+# chmod +x feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash*
