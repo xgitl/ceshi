@@ -15,11 +15,15 @@
 # 修改固件名显示内核版本
 sed -i 's/IMG_PREFIX:=/IMG_PREFIX:=$(LINUX_VERSION)-/g' include/image.mk
 # 修改默认IP
-# sed -i 's/192.168.1.1/192.168.3.1/g' package/base-files/files/bin/config_generate
-# IPv6 分配长度设置为62可支持4个子网，63可支持两个子网，
+# sed -i '/lan) ipad/s/".*"/"192.168.1.1"/' package/base-files/files/bin/config_generate
+# IPv6 分配长度设置为62可支持4个子网，63可支持两个子网
 sed -i "s/ip6assign='.*'/ip6assign='62'/" package/base-files/files/bin/config_generate
+# IPv6 分配长度设置为62可支持4个子网，63可支持两个子网，lean默认用luci2配置路径不一样
+sed -i "s/ip6assign='.*'/ip6assign='62'/" package/base-files/luci2/bin/config_generate
 # 修改主机名
 sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/files/bin/config_generate
+# 修改主机名，lean默认用luci2配置路径不一样
+sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/luci2/bin/config_generate
 # 更改时区，官方openwrt要更改
 # sed -i "s/'UTC'/'CST-8'\n\t\tset system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
 # 修改wan默认为pppoe拨号，官方openwrt有效，lean无效
@@ -33,7 +37,7 @@ sed -i "/ssid=/c\\\t\t\tset wireless.default_radio0.ssid=x\n\t\t\tset wireless.d
 # 默认开启KV，lean
 sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # lean清除登录密码password
-sed -i 's/$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.//g' package/lean/default-settings/files/zzz-default-settings
+sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
 # 默认关闭 全锥型NAT，luci-app-turboacc设置用
 sed -i '/fullcone_nat/s/[0-9]/0/' feeds/luci/applications/luci-app-turboacc/root/etc/config/turboacc
 # WatchCat，lean设置，这个周期要比ping周期时间长才行，要不然会报错
@@ -49,7 +53,7 @@ sed -i "/encryption/s/'.*'/'none'/" feeds/luci/applications/luci-app-guest-wifi/
 
 cat << EOF > package/base-files/files/etc/uci-defaults/99-custom
 uci -q batch << EOI
-set dhcp.lan.start='50'
+set dhcp.lan.start='51'
 set dhcp.lan.limit='205'
 set network.wan.proto=pppoe
 set network.wan.keepalive='2 120'
@@ -311,6 +315,6 @@ payload:
 EOF
 
 mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/config && touch feeds/openclash/luci-app-openclash/root/etc/openclash/config/config.yaml
-# mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
-# curl -sL https://raw.githubusercontent.com/vernesong/openclash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash_meta
-# chmod +x feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash*
+mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
+curl -sL https://raw.githubusercontent.com/vernesong/openclash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash_meta
+chmod +x feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash*
