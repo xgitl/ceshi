@@ -176,7 +176,7 @@ config groups
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '3000'
 	option tolerance '30'
-	option policy_filter '(?i)(台湾|TW|🇹🇼|Tai)'
+	option policy_filter '(?i)(台|TW|🇹🇼|Tai)'
 	option old_name_cfg '台湾'
 	option old_name '台湾'
 
@@ -189,7 +189,7 @@ config groups
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '3000'
 	option tolerance '30'
-	option policy_filter '(?i)(香港|HK|🇭🇰|Hong)'
+	option policy_filter '(?i)(港|HK|🇭🇰|Hong)'
 	option old_name_cfg '香港'
 	option old_name '香港'
 
@@ -202,7 +202,7 @@ config groups
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '3000'
 	option tolerance '30'
-	option policy_filter '(?i)^(?!.*(新加坡|SG|🇸🇬|Sing|马来西亚|MY|🇲🇾|Malaysia|澳大利亚|AU|🇦🇺|香港|HK|🇭🇰|Hong|澳门|MO|🇲🇴|Macao|日本|JP|🇯🇵|Japan|印度尼西亚|印尼|ID|🇮🇩|Indonesia|新西兰|NZ|🇳🇿|Zealand|越南|VN|🇻🇳|Viet)).*'
+	option policy_filter '(?i)^(?!.*(新加坡|SG|🇸🇬|Sing|马来西亚|MY|🇲🇾|Malaysia|澳|AU|🇦🇺|MO|🇲🇴|Macao|港|HK|🇭🇰|Hong|日本|JP|🇯🇵|Japan|印度尼西亚|印尼|ID|🇮🇩|Indonesia|新西兰|NZ|🇳🇿|Zealand|越|VN|🇻🇳|Viet)).*'
 	option old_name_cfg '冲冲冲'
 	option old_name '冲冲冲'
 
