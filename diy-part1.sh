@@ -31,7 +31,7 @@ function git_sparse_clone() {
 }
 
 # Add a feed source
-sed -i '1i src-git openclash https://github.com/vernesong/openclash' feeds.conf.default
+sed -i 'src-git openclash https://github.com/vernesong/openclash' feeds.conf.default
 # sed -i '1i src-git openclash https://github.com/vernesong/openclash;dev' feeds.conf.default
 # sed -i '1i src-git openclash https://github.com/vernesong/openclash^fc741a805883d6105c989af9bb6688e0edd7ab32' feeds.conf.default
 # sed -i '1i src-git passwall https://github.com/xiaorouji/openwrt-passwall' feeds.conf.default
