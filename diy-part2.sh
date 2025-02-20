@@ -35,7 +35,7 @@ sed -i '/enabled/s/0/1/' feeds/packages/net/miniupnpd/files/upnpd.config
 # 修改wifi名称
 sed -i "/ssid=/c\\\t\t\tset wireless.default_radio0.ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G" package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 默认开启KV，lean
-sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+# sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # lean清除登录密码password
 sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
 # 默认关闭 全锥型NAT，luci-app-turboacc设置用
@@ -315,6 +315,6 @@ payload:
 EOF
 
 mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/config && touch feeds/openclash/luci-app-openclash/root/etc/openclash/config/config.yaml
-# mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
-# curl -sL https://raw.githubusercontent.com/vernesong/openclash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash_meta
-# chmod +x feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash*
+mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
+curl -sL https://raw.githubusercontent.com/vernesong/openclash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash_meta
+chmod +x feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash*
