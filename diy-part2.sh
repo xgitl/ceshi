@@ -21,7 +21,7 @@ sed -i "s/ip6assign='.*'/ip6assign='62'/" package/base-files/files/bin/config_ge
 # IPv6 分配长度设置为62可支持4个子网，63可支持两个子网，lean默认用luci2配置路径不一样
 # sed -i "s/ip6assign='.*'/ip6assign='62'/" package/base-files/luci2/bin/config_generate
 # 修改主机名
-# sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/files/bin/config_generate
+sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/files/bin/config_generate
 # 修改主机名，lean默认用luci2配置路径不一样
 # sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/luci2/bin/config_generate
 # 更改时区，官方openwrt要更改
@@ -31,11 +31,11 @@ sed -i "s/'UTC'/'CST-8'\n\t\tset system.@system[-1].zonename='Asia\/Shanghai'/g"
 # 开启 UPnP，官方openwrt，lean都要开启
 sed -i '/enabled/s/0/1/' feeds/packages/net/miniupnpd/files/upnpd.config
 # 默认开启Wifi，官方openwrt要开启
-# sed -i 's/disabled=1/disabled=0/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+sed -i 's/disabled=1/disabled=0/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 修改wifi名称
 sed -i "/ssid=/c\\\t\t\tset wireless.default_radio0.ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G" package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 默认开启KV，lean
-# sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # lean清除登录密码password
 # sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
 # 默认关闭 全锥型NAT，luci-app-turboacc设置用
@@ -150,7 +150,7 @@ config groups
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '3000'
 	option tolerance '30'
-	option policy_filter '(?i)(美国|US|🇺🇸|America|States)'
+	option policy_filter '(?i)(美国|U.?S|🇺🇸|America|States)'
 	option old_name_cfg '美国'
 	option old_name '美国'
 
@@ -202,7 +202,7 @@ config groups
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '3000'
 	option tolerance '30'
-	option policy_filter '(?i)^(?!.*(新加坡|SG|🇸🇬|Sing|马来西亚|MY|🇲🇾|Malaysia|澳|AU|🇦🇺|MO|🇲🇴|Macao|港|HK|🇭🇰|Hong|日本|JP|🇯🇵|Japan|印度尼西亚|印尼|ID|🇮🇩|Indonesia|新西兰|NZ|🇳🇿|Zealand|越|VN|🇻🇳|Viet)).*'
+	option policy_filter '(?i)^(?!.*(坡|SG|🇸🇬|Sing|马来西亚|MY|🇲🇾|Malaysia|澳|AU|🇦🇺|MO|🇲🇴|Macao|港|HK|🇭🇰|Hong|日本|JP|🇯🇵|Japan|印度尼西亚|印尼|ID|🇮🇩|Indonesia|新西兰|NZ|🇳🇿|Zealand|越|VN|🇻🇳|Viet)).*'
 	option old_name_cfg '冲冲冲'
 	option old_name '冲冲冲'
 
@@ -298,8 +298,8 @@ echo "
 echo "- MATCH,DIRECT" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
 rm -rf feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/*
-curl -sL https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui
-mv feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/dist feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/zashboard && rm -rf /tmp/meta.zip
+# curl -sL https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui
+# mv feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/dist feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/zashboard && rm -rf /tmp/meta.zip
 rm -rf feeds/openclash/luci-app-openclash/root/etc/openclash/game_rules/*
 rm -rf feeds/openclash/luci-app-openclash/root/etc/openclash/rule_provider/*
 echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/accelerated-domains.china.conf
