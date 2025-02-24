@@ -298,8 +298,8 @@ echo "
 echo "- MATCH,DIRECT" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
 rm -rf feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/*
-# curl -sL https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui
-# mv feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/dist feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/zashboard && rm -rf /tmp/meta.zip
+curl -sL https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui
+mv feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/dist feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/zashboard && rm -rf /tmp/meta.zip
 rm -rf feeds/openclash/luci-app-openclash/root/etc/openclash/game_rules/*
 rm -rf feeds/openclash/luci-app-openclash/root/etc/openclash/rule_provider/*
 echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/accelerated-domains.china.conf
