@@ -31,15 +31,17 @@ sed -i "s/'UTC'/'CST-8'\n\t\tset system.@system[-1].zonename='Asia\/Shanghai'/g"
 # 开启 UPnP，官方openwrt，lean都要开启
 sed -i '/enabled/s/0/1/' feeds/packages/net/miniupnpd/files/upnpd.config
 # 默认开启Wifi，官方openwrt要开启
-sed -i 's/disabled=1/disabled=0/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+# sed -i 's/disabled=1/disabled=0/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 修改wifi名称
 sed -i "/ssid=/c\\\t\t\tset wireless.default_radio0.ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G" package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 默认开启KV，lean
 sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
-# lean清除登录密码password
-# sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
+# 官方Openwrt防火墙位置开启硬件加速
+sed -i "/defaults/a\\\toption flow_offloading\t1\n\toption flow_offloading_hw 1" package/network/config/firewall/files/firewall.config
 # 默认关闭 全锥型NAT，luci-app-turboacc设置用
 # sed -i '/fullcone_nat/s/[0-9]/0/' feeds/luci/applications/luci-app-turboacc/root/etc/config/turboacc
+# lean清除登录密码password
+# sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
 # WatchCat，lean设置，这个周期要比ping周期时间长才行，要不然会报错
 # sed -i "/forcedelay/s/'.*'/'0'/" feeds/packages/utils/watchcat/files/watchcat.config
 # sed -i "/period/s/'.*'/'4h'/" feeds/packages/utils/watchcat/files/watchcat.config
@@ -214,7 +216,7 @@ config rule_providers
 	option behavior 'classical'
 	option format 'yaml'
 	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PrivateTracker/PrivateTracker_No_Resolve.yaml'
-	option interval '86400'
+	option interval '300000'
 	option position '1'
 	option group 'DIRECT'
 
@@ -226,7 +228,7 @@ config rule_providers
 	option behavior 'classical'
 	option format 'yaml'
 	option url 'https://raw.githubusercontent.com/xgitl/gz/main/zl.yaml'
-	option interval '864000'
+	option interval '3000000'
 	option position '1'
 	option group 'DIRECT'
 
@@ -238,7 +240,7 @@ config rule_providers
 	option behavior 'classical'
 	option format 'yaml'
 	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dl.yaml'
-	option interval '864000'
+	option interval '3000000'
 	option position '1'
 	option group 'Proxy'
 
@@ -250,9 +252,45 @@ config rule_providers
 	option behavior 'classical'
 	option format 'yaml'
 	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dl2.yaml'
-	option interval '864000'
+	option interval '3000000'
 	option position '1'
 	option group 'Proxy'
+
+config rule_providers
+	option enabled '1'
+	option config 'all'
+	option name 'sg'
+	option type 'http'
+	option behavior 'classical'
+	option format 'yaml'
+	option url 'https://raw.githubusercontent.com/xgitl/gz/main/sg.yaml'
+	option interval '3000000'
+	option position '1'
+	option group '新加坡'
+
+config rule_providers
+	option enabled '1'
+	option config 'all'
+	option name 'tw'
+	option type 'http'
+	option behavior 'classical'
+	option format 'yaml'
+	option url 'https://raw.githubusercontent.com/xgitl/gz/main/tw.yaml'
+	option interval '3000000'
+	option position '1'
+	option group '台湾'
+
+config rule_providers
+	option enabled '1'
+	option config 'all'
+	option name 'hk'
+	option type 'http'
+	option behavior 'classical'
+	option format 'yaml'
+	option url 'https://raw.githubusercontent.com/xgitl/gz/main/sg.yaml'
+	option interval '3000000'
+	option position '1'
+	option group '香港'
 
 config rule_providers
 	option enabled '1'
@@ -262,7 +300,7 @@ config rule_providers
 	option behavior 'classical'
 	option format 'yaml'
 	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube_No_Resolve.yaml'
-	option interval '86400'
+	option interval '300000'
 	option position '1'
 	option group 'YouTube'
 
@@ -274,7 +312,7 @@ config rule_providers
 	option behavior 'domain'
 	option format 'yaml'
 	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Global/Global_Domain.yaml'
-	option interval '86400'
+	option interval '300000'
 	option position '1'
 	option group 'Proxy'
 
@@ -286,7 +324,7 @@ config rule_providers
 	option behavior 'classical'
 	option format 'yaml'
 	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Global/Global_No_Resolve.yaml'
-	option interval '86400'
+	option interval '300000'
 	option position '1'
 	option group 'Proxy'
 " >> feeds/openclash/luci-app-openclash/root/etc/config/openclash
