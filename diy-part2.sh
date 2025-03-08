@@ -37,7 +37,7 @@ sed -i "/ssid=/c\\\t\t\tset wireless.default_radio0.ssid=x\n\t\t\tset wireless.d
 # 默认开启KV，lean
 sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 官方Openwrt防火墙位置开启硬件加速
-sed -i "/defaults/a\\\toption flow_offloading  1\n\toption flow_offloading_hw 1" package/network/config/firewall/files/firewall.config
+sed -i "5a  \\\toption flow_offloading\t1\n\toption flow_offloading_hw 1" package/network/config/firewall/files/firewall.config
 # 默认关闭 全锥型NAT，luci-app-turboacc设置用
 # sed -i '/fullcone_nat/s/[0-9]/0/' feeds/luci/applications/luci-app-turboacc/root/etc/config/turboacc
 # lean清除登录密码password
