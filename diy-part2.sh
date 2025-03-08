@@ -287,7 +287,7 @@ config rule_providers
 	option type 'http'
 	option behavior 'classical'
 	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/xgitl/gz/main/sg.yaml'
+	option url 'https://raw.githubusercontent.com/xgitl/gz/main/hk.yaml'
 	option interval '3000000'
 	option position '1'
 	option group '香港'
