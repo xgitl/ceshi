@@ -26,29 +26,35 @@ sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/files/bin/config
 # sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/luci2/bin/config_generate
 # 更改时区，官方openwrt要更改
 sed -i "s/'UTC'/'CST-8'\n\t\tset system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
-# 修改wan默认为pppoe拨号，官方openwrt有效，lean无效
+# 修改wan默认为pppoe拨号，官方openwrt有效，lean无效，已在uci中设置
 # sed -i 's/-dhcp/-pppoe/g' package/base-files/files/lib/functions/uci-defaults.sh
 # 开启 UPnP，官方openwrt，lean都要开启
 sed -i '/enabled/s/0/1/' feeds/packages/net/miniupnpd/files/upnpd.config
-# 默认开启Wifi，官方openwrt要开启
-# sed -i 's/disabled=1/disabled=0/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
-# 修改wifi名称
-sed -i "/ssid=/c\\\t\t\tset wireless.default_radio0.ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G" package/kernel/mac80211/files/lib/wifi/mac80211.sh
-# 默认开启KV，lean
-sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
-# 官方Openwrt防火墙位置开启硬件加速
-sed -i "5a  \\\toption flow_offloading\t1\n\toption flow_offloading_hw 1" package/network/config/firewall/files/firewall.config
 # 默认关闭 全锥型NAT，luci-app-turboacc设置用
 # sed -i '/fullcone_nat/s/[0-9]/0/' feeds/luci/applications/luci-app-turboacc/root/etc/config/turboacc
 # lean清除登录密码password
 # sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
+# 默认开启Wifi，官方openwrt-23.05和以前的版本要开启
+# sed -i 's/disabled=1/disabled=0/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+# 默认开启Wifi，官方openwrt-24.01以后的版本要开启
+sed -i "s/disabled='.*'/disabled='0'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+# 修改wifi名称
+# sed -i "/ssid=/c\\\t\t\tset wireless.default_radio0.ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G" package/kernel/mac80211/files/lib/wifi/mac80211.sh
+# 修改wifi名称，官方openwrt-24.01以后的版本要开启
+sed -i "s/ssid='.*'/ssid='x'\nset wireless.default_radio1.ssid='x_5G'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+# wifi加密模式，官方openwrt-24.01以后的版本要开启
+sed -i "s/encryption='.*'/encryption='psk2+ccmp'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+# 默认开启KV，官方openwrt-24.01以后的版本要开启
+sed -i "s/key='.*'/key='12345678'\nset \${si}.ieee80211k='1'\nset \${si}.ieee80211v='1'\nset \${si}.wnm_sleep_mode='1'\nset \${si}.bss_transition='1'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+# 默认开启KV，lean
+# sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # WatchCat，lean设置，这个周期要比ping周期时间长才行，要不然会报错
 # sed -i "/forcedelay/s/'.*'/'0'/" feeds/packages/utils/watchcat/files/watchcat.config
 # sed -i "/period/s/'.*'/'4h'/" feeds/packages/utils/watchcat/files/watchcat.config
 # sed -i "/pinghosts/s/'.*'/'qq.com'\n\toption pingperiod '2h'/" feeds/packages/utils/watchcat/files/watchcat.config
 # WiFi访客插件设置
-# sed -i 's/Guest-WiFi/访客/' feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
-# sed -i "/encryption/s/'.*'/'none'/" feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
+sed -i 's/Guest-WiFi/访客/' feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
+sed -i "/encryption/s/'.*'/'none'/" feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
 
 # 删除插件
 # rm -rf feeds/packages/multimedia/UnblockNeteaseMusic
@@ -67,6 +73,8 @@ set firewall.@rule[-1].family='ipv6'
 set firewall.@rule[-1].dest_port='56681 56682 56683'
 set firewall.@rule[-1].proto='tcp udp'
 set firewall.@rule[-1].target='ACCEPT'
+set firewall.@defaults[-1].flow_offloading='1'
+set firewall.@defaults[-1].flow_offloading_hw='1'
 EOI
 exit 0
 EOF
