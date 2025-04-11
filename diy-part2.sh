@@ -39,12 +39,12 @@ sed -i '/enabled/s/0/1/' feeds/packages/net/miniupnpd/files/upnpd.config
 # 默认开启Wifi，官方openwrt-24.01以后的版本要开启
 sed -i "s/disabled='.*'/disabled='0'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 # 修改wifi名称
-# sed -i "/ssid=/c\\\t\t\tset wireless.default_radio0.ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G" package/kernel/mac80211/files/lib/wifi/mac80211.sh
+# sed -i "s/ssid=.*/ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G/g" package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 修改wifi名称，官方openwrt-24.01以后的版本要开启
 sed -i "s/ssid='.*'/ssid='x'\nset wireless.default_radio1.ssid='x_5G'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
-# wifi加密模式，官方openwrt-24.01以后的版本要开启
+# kv开启的话wifi要设置密码要不然wifi不能启动，官方openwrt-24.01以后的版本要开启
 sed -i "s/encryption='.*'/encryption='psk2+ccmp'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
-# 默认开启KV，官方openwrt-24.01以后的版本要开启
+# 默认开启kv，官方openwrt-24.01以后的版本要开启
 sed -i "s/key='.*'/key='12345678'\nset \${si}.ieee80211k='1'\nset \${si}.ieee80211v='1'\nset \${si}.wnm_sleep_mode='1'\nset \${si}.bss_transition='1'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 # 默认开启KV，lean
 # sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
@@ -243,30 +243,6 @@ config rule_providers
 config rule_providers
 	option enabled '1'
 	option config 'all'
-	option name 'dl'
-	option type 'http'
-	option behavior 'classical'
-	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dl.yaml'
-	option interval '3000000'
-	option position '1'
-	option group 'Proxy'
-
-config rule_providers
-	option enabled '1'
-	option config 'all'
-	option name 'dl2'
-	option type 'http'
-	option behavior 'classical'
-	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dl2.yaml'
-	option interval '3000000'
-	option position '1'
-	option group 'Proxy'
-
-config rule_providers
-	option enabled '1'
-	option config 'all'
 	option name 'sg'
 	option type 'http'
 	option behavior 'classical'
@@ -315,6 +291,30 @@ config rule_providers
 config rule_providers
 	option enabled '1'
 	option config 'all'
+	option name 'dl2'
+	option type 'http'
+	option behavior 'classical'
+	option format 'yaml'
+	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dl2.yaml'
+	option interval '3000000'
+	option position '1'
+	option group 'Proxy'
+
+config rule_providers
+	option enabled '1'
+	option config 'all'
+	option name 'dl'
+	option type 'http'
+	option behavior 'classical'
+	option format 'yaml'
+	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dl.yaml'
+	option interval '3000000'
+	option position '1'
+	option group 'Proxy'
+
+config rule_providers
+	option enabled '1'
+	option config 'all'
 	option name 'gfw'
 	option type 'http'
 	option behavior 'domain'
@@ -339,7 +339,7 @@ config rule_providers
 
 echo "
 'rule-set:dl2': [114.114.114.114, 119.29.29.29, 223.5.5.5]
-'rule-set:dl,YouTube,gfw': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
+'rule-set:sg,tw,hk,YouTube,dl,gfw': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
 echo "- MATCH,DIRECT" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
