@@ -35,19 +35,19 @@ sed -i '/enabled/s/0/1/' feeds/packages/net/miniupnpd/files/upnpd.config
 # lean清除登录密码password
 # sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
 # 默认开启Wifi，官方openwrt-23.05和以前的版本要开启
-# sed -i 's/disabled=1/disabled=0/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+sed -i 's/disabled=1/disabled=0/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 默认开启Wifi，官方openwrt-24.01以后的版本要开启
-sed -i "s/disabled='.*'/disabled='0'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+# sed -i "s/disabled='.*'/disabled='0'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 # 修改wifi名称
-# sed -i "s/ssid=.*/ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G/g" package/kernel/mac80211/files/lib/wifi/mac80211.sh
+sed -i "s/ssid=.*/ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G/g" package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 修改wifi名称，官方openwrt-24.01以后的版本要开启
-sed -i "s/ssid='.*'/ssid='x'\nset wireless.default_radio1.ssid='x_5G'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+# sed -i "s/ssid='.*'/ssid='x'\nset wireless.default_radio1.ssid='x_5G'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 # kv开启的话wifi要设置密码要不然wifi不能启动，官方openwrt-24.01以后的版本要开启
-sed -i "s/encryption='.*'/encryption='psk2+ccmp'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+# sed -i "s/encryption='.*'/encryption='psk2+ccmp'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 # 默认开启kv，官方openwrt-24.01以后的版本要开启
-sed -i "s/key='.*'/key='12345678'\nset \${si}.ieee80211k='1'\nset \${si}.ieee80211v='1'\nset \${si}.wnm_sleep_mode='1'\nset \${si}.bss_transition='1'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+# sed -i "s/key='.*'/key='12345678'\nset \${si}.ieee80211k='1'\nset \${si}.ieee80211v='1'\nset \${si}.wnm_sleep_mode='1'\nset \${si}.bss_transition='1'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 # 默认开启KV，lean
-# sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # WatchCat，lean设置，这个周期要比ping周期时间长才行，要不然会报错
 # sed -i "/forcedelay/s/'.*'/'0'/" feeds/packages/utils/watchcat/files/watchcat.config
 # sed -i "/period/s/'.*'/'4h'/" feeds/packages/utils/watchcat/files/watchcat.config
