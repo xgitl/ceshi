@@ -53,8 +53,8 @@ sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${de
 # sed -i "/period/s/'.*'/'4h'/" feeds/packages/utils/watchcat/files/watchcat.config
 # sed -i "/pinghosts/s/'.*'/'qq.com'\n\toption pingperiod '2h'/" feeds/packages/utils/watchcat/files/watchcat.config
 # WiFi访客插件设置
-sed -i 's/Guest-WiFi/访客/' feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
-sed -i "/encryption/s/'.*'/'none'/" feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
+# sed -i 's/Guest-WiFi/访客/' feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
+# sed -i "/encryption/s/'.*'/'none'/" feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
 
 # 删除插件
 # rm -rf feeds/packages/multimedia/UnblockNeteaseMusic
