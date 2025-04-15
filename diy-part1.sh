@@ -21,7 +21,6 @@
 # sed -i '/luci.git;/s/^/#/' feeds.conf.default
 sed -i '/packages/c\src-git packages https://github.com/coolsnowwolf/packages' feeds.conf.default
 sed -i '/luci/c\src-git luci https://github.com/coolsnowwolf/luci' feeds.conf.default
-sed -i '/routing/c\src-git routing https://github.com/coolsnowwolf/routing' feeds.conf.default
 sed -i '/telephony/c\src-git telephony https://github.com/coolsnowwolf/telephony' feeds.conf.default
 
 # Git稀疏克隆，只克隆指定目录到本地
