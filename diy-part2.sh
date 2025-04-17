@@ -34,27 +34,27 @@ sed -i '/enabled/s/0/1/' feeds/packages/net/miniupnpd/files/upnpd.config
 # sed -i '/fullcone_nat/s/[0-9]/0/' feeds/luci/applications/luci-app-turboacc/root/etc/config/turboacc
 # lean清除登录密码password
 # sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
-# 默认开启Wifi，官方openwrt-23.05和以前的版本要开启
+# 默认开启Wifi，官方openwrt-23.05和旧的版本要开启
 sed -i 's/disabled=1/disabled=0/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
-# 默认开启Wifi，官方openwrt-24.01以后的版本要开启
+# 默认开启Wifi，官方openwrt-24.01和新的版本要开启
 # sed -i "s/disabled='.*'/disabled='0'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
-# 修改wifi名称
+# 修改wifi名称，官方openwrt-23.05和旧的版本要开启
 sed -i "s/ssid=.*/ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G/g" package/kernel/mac80211/files/lib/wifi/mac80211.sh
-# 修改wifi名称，官方openwrt-24.01以后的版本要开启
+# 修改wifi名称，官方openwrt-24.01和新的版本要开启
 # sed -i "s/ssid='.*'/ssid='x'\nset wireless.default_radio1.ssid='x_5G'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
-# kv开启的话wifi要设置密码要不然wifi不能启动，官方openwrt-24.01以后的版本要开启
-# sed -i "s/encryption='.*'/encryption='psk2+ccmp'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
-# 默认开启kv，官方openwrt-24.01以后的版本要开启
-# sed -i "s/key='.*'/key='12345678'\nset \${si}.ieee80211k='1'\nset \${si}.ieee80211v='1'\nset \${si}.wnm_sleep_mode='1'\nset \${si}.bss_transition='1'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
-# 默认开启KV，lean
+# 默认开启KV，官方openwrt-23.05和旧的版本和lean要开启,
 sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+# 默认开启kv，官方openwrt-24.01和新的版本要开启
+# sed -i "s/key='.*'/key='12345678'\nset \${si}.ieee80211k='1'\nset \${si}.ieee80211v='1'\nset \${si}.wnm_sleep_mode='1'\nset \${si}.bss_transition='1'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+# kv开启的话wifi要设置密码要不然wifi不能启动，官方openwrt-24.01和新的版本要开启
+# sed -i "s/encryption='.*'/encryption='psk2+ccmp'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 # WatchCat，lean设置，这个周期要比ping周期时间长才行，要不然会报错
 # sed -i "/forcedelay/s/'.*'/'0'/" feeds/packages/utils/watchcat/files/watchcat.config
 # sed -i "/period/s/'.*'/'4h'/" feeds/packages/utils/watchcat/files/watchcat.config
 # sed -i "/pinghosts/s/'.*'/'qq.com'\n\toption pingperiod '2h'/" feeds/packages/utils/watchcat/files/watchcat.config
 # WiFi访客插件设置
-# sed -i 's/Guest-WiFi/访客/' feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
-# sed -i "/encryption/s/'.*'/'none'/" feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
+sed -i 's/Guest-WiFi/访客/' feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
+sed -i "/encryption/s/'.*'/'none'/" feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
 
 # 删除插件
 # rm -rf feeds/packages/multimedia/UnblockNeteaseMusic
@@ -93,6 +93,8 @@ sed -i "/ipv6_enable/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/co
 sed -i "/ipv6_dns/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 自定义上游 DNS 服务器
 sed -i "/enable_custom_dns/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# 与 DNS 服务器的连接遵循配置文件中的规则
+sed -i "/respect_rules/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # Nameserver-Policy
 sed -i "/custom_name_policy/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 自定义规则
@@ -339,7 +341,7 @@ config rule_providers
 
 echo "
 'rule-set:dl2': [114.114.114.114, 119.29.29.29, 223.5.5.5]
-'rule-set:sg,tw,hk,YouTube,dl,gfw': [1.1.1.1, 8.8.8.8, 208.67.222.222]" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
+'rule-set:sg,tw,hk,YouTube,dl,gfw': [https://dns.google/dns-query, https://cloudflare-dns.com/dns-query, https://doh.opendns.com/dns-query]" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
 echo "- MATCH,DIRECT" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
