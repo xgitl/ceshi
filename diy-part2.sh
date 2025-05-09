@@ -25,31 +25,31 @@ sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/files/bin/config
 # 修改主机名，lean默认用luci2配置路径不一样
 # sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/luci2/bin/config_generate
 # 更改时区，官方openwrt要更改
-# sed -i "s/'UTC'/'CST-8'\n\t\tset system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
+sed -i "s/'UTC'/'CST-8'\n\t\tset system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
 # 修改wan默认为pppoe拨号，官方openwrt有效，lean无效，已在uci中设置
 # sed -i 's/-dhcp/-pppoe/g' package/base-files/files/lib/functions/uci-defaults.sh
 # 开启 UPnP，官方openwrt，lean都要开启
 sed -i '/enabled/s/0/1/' feeds/packages/net/miniupnpd/files/upnpd.config
 # 默认关闭 全锥型NAT，luci-app-turboacc设置用
-sed -i '/fullcone_nat/s/[0-9]/0/' feeds/luci/applications/luci-app-turboacc/root/etc/config/turboacc
+# sed -i '/fullcone_nat/s/[0-9]/0/' feeds/luci/applications/luci-app-turboacc/root/etc/config/turboacc
 # lean清除登录密码password
-sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
+# sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
 # 默认开启Wifi，官方openwrt-23.05和旧的版本要开启
 # sed -i 's/disabled=1/disabled=0/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
-# 默认开启Wifi，官方openwrt-24.01和新的版本要开启
-# sed -i "s/disabled='.*'/disabled='0'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
-# 修改wifi名称，官方openwrt-23.05和旧的版本要开启
-sed -i "s/ssid=.*/ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G/g" package/kernel/mac80211/files/lib/wifi/mac80211.sh
-# 修改wifi名称，官方openwrt-24.01和新的版本要开启
-# sed -i "s/ssid='.*'/ssid='x'\nset wireless.default_radio1.ssid='x_5G'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+# 默认开启Wifi，官方openwrt-24.10和新的版本要开启
+sed -i "s/disabled='.*'/disabled='0'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+# 修改wifi名称，官方openwrt-23.05和旧的版本要开启，lean要开启
+# sed -i "s/ssid=.*/ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G/g" package/kernel/mac80211/files/lib/wifi/mac80211.sh
+# 修改wifi名称，官方openwrt-24.10和新的版本要开启
+sed -i "s/ssid='.*'/ssid='x'\nset wireless.default_radio1.ssid='x_5G'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 # 默认开启KV，lean要开启,
-sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+# sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 默认开启KV，官方openwrt-23.05和旧的版本要开启
-# sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_${name}.key=12345678\n\t\t\tset wireless.default_${name}.ieee80211k=1\n\t\t\tset wireless.default_${name}.wnm_sleep_mode=1\n\t\t\tset wireless.default_${name}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
-# 默认开启kv，官方openwrt-24.01和新的版本要开启
-# sed -i "s/key='.*'/key='12345678'\nset \${si}.ieee80211k='1'\nset \${si}.ieee80211v='1'\nset \${si}.wnm_sleep_mode='1'\nset \${si}.bss_transition='1'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
-# kv开启的话wifi要设置密码要不然wifi不能启动，官方openwrt-24.01和新的版本要开启
-# sed -i "s/encryption='.*'/encryption='psk2+ccmp'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+# sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_${name}.key=12345678\n\t\t\tset wireless.default_${name}.ieee80211k=1\n\t\t\tset wireless.default_${name}.wnm_sleep_mode=1\n\t\t\tset wireless.default_${name}.wnm_sleep_mode_no_keys=1\n\t\t\tset wireless.default_${name}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+# 默认开启kv，官方openwrt-24.10和新的版本要开启
+sed -i "s/key='.*'/key='12345678'\nset \${si}.ieee80211k='1'\nset \${si}.ieee80211v='1'\nset \${si}.wnm_sleep_mode='1'\nset \${si}.wnm_sleep_mode_no_keys='1'\nset \${si}.bss_transition='1'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+# kv开启的话wifi要设置密码要不然wifi不能启动，官方openwrt-24.10和新的版本要开启
+sed -i "s/encryption='.*'/encryption='psk2+ccmp'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 # WatchCat，lean设置，这个周期要比ping周期时间长才行，要不然会报错
 # sed -i "/forcedelay/s/'.*'/'0'/" feeds/packages/utils/watchcat/files/watchcat.config
 # sed -i "/period/s/'.*'/'4h'/" feeds/packages/utils/watchcat/files/watchcat.config
@@ -76,6 +76,67 @@ set firewall.Download.family='ipv6'
 set firewall.Download.target='ACCEPT'
 set firewall.@defaults[-1].flow_offloading='1'
 set firewall.@defaults[-1].flow_offloading_hw='1'
+delete network.wan6
+EOI
+exit 0
+EOF
+
+cat << EOF > package/base-files/files/etc/uci-defaults/98-custom
+WIFI_DEV="\$(uci get wireless.@wifi-iface[0].device)"
+uci -q batch << EOI
+set network.guest_dev='device'
+set network.guest_dev.type='bridge'
+set network.guest_dev.name='br-guest'
+set network.guest_dev.bridge_empty='1'
+set network.guest='interface'
+set network.guest.proto='static'
+set network.guest.device='br-guest'
+set network.guest.ipaddr='192.168.4.1/24'
+set network.guest.ip6assign='64'
+set wireless.guest='wifi-iface'
+set wireless.guest.device="\${WIFI_DEV}"
+set wireless.guest.mode='ap'
+set wireless.guest.network='guest'
+set wireless.guest.ssid='访客'
+set wireless.guest.encryption='none'
+set wireless.guest.isolate='1'
+set dhcp.guest='dhcp'
+set dhcp.guest.interface='guest'
+set dhcp.guest.start='20'
+set dhcp.guest.limit='235'
+set dhcp.guest.leasetime='2h'
+set dhcp.guest.ra='server'
+set dhcp.guest.dhcpv6='server'
+add_list dhcp.guest.ra_flags='managed-config'
+add_list dhcp.guest.ra_flags='other-config'
+set firewall.guest="zone"
+set firewall.guest.name="guest"
+set firewall.guest.network="guest"
+set firewall.guest.input="REJECT"
+set firewall.guest.output="ACCEPT"
+set firewall.guest.forward="REJECT"
+set firewall.guest_wan="forwarding"
+set firewall.guest_wan.src="guest"
+set firewall.guest_wan.dest="wan"
+set firewall.guest_dns="rule"
+set firewall.guest_dns.src="guest"
+set firewall.guest_dns.name="Allow-DNS-Guest"
+set firewall.guest_dns.dest_port="53"
+set firewall.guest_dns.target="ACCEPT"
+set firewall.guest_dhcp="rule"
+set firewall.guest_dhcp.src="guest"
+set firewall.guest_dhcp.name="Allow-DHCP-Guest"
+set firewall.guest_dhcp.proto="udp"
+set firewall.guest_dhcp.dest_port="67"
+set firewall.guest_dhcp.family="ipv4"
+set firewall.guest_dhcp.target="ACCEPT"
+set firewall.guest_dhcp6="rule"
+set firewall.guest_dhcp6.src="guest"
+set firewall.guest_dhcp6.name="Allow-DHCPv6-Guest"
+set firewall.guest_dhcp6.proto="udp"
+set firewall.guest_dhcp6.dest_port="547"
+set firewall.guest_dhcp6.family="ipv6"
+set firewall.guest_dhcp6.target="ACCEPT"
 EOI
 exit 0
 EOF
@@ -149,7 +210,7 @@ config groups
 	option name '自动'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '3000'
+	option test_interval '5000'
 	option tolerance '30'
 	option old_name_cfg '自动'
 	option old_name '自动'
@@ -161,7 +222,7 @@ config groups
 	option name '美国'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '3000'
+	option test_interval '5000'
 	option tolerance '30'
 	option policy_filter '(?i)(美国|U.?S|🇺🇸|America|States)'
 	option old_name_cfg '美国'
@@ -174,7 +235,7 @@ config groups
 	option name '新加坡'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '3000'
+	option test_interval '5000'
 	option tolerance '30'
 	option policy_filter '(?i)(新加坡|SG|🇸🇬|Sing)'
 	option old_name_cfg '新加坡'
@@ -187,7 +248,7 @@ config groups
 	option name '台湾'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '3000'
+	option test_interval '5000'
 	option tolerance '30'
 	option policy_filter '(?i)(台|TW|🇹🇼|Tai)'
 	option old_name_cfg '台湾'
@@ -200,7 +261,7 @@ config groups
 	option name '香港'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '3000'
+	option test_interval '5000'
 	option tolerance '30'
 	option policy_filter '(?i)(港|HK|🇭🇰|Hong)'
 	option old_name_cfg '香港'
@@ -213,7 +274,7 @@ config groups
 	option name '冲冲冲'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '3000'
+	option test_interval '5000'
 	option tolerance '30'
 	option policy_filter '(?i)^(?!.*(坡|SG|🇸🇬|Sing|马来西亚|MY|🇲🇾|Malaysia|澳|AU|🇦🇺|MO|🇲🇴|Macao|港|HK|🇭🇰|Hong|日本|JP|🇯🇵|Japan|印度尼西亚|印尼|ID|🇮🇩|Indonesia|新西兰|NZ|🇳🇿|Zealand|越|VN|🇻🇳|Viet)).*'
 	option old_name_cfg '冲冲冲'
