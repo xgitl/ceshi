@@ -31,9 +31,9 @@ sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/files/bin/config
 # 开启 UPnP，官方openwrt，lean都要开启
 sed -i '/enabled/s/0/1/' feeds/packages/net/miniupnpd/files/upnpd.config
 # 默认关闭 全锥型NAT，luci-app-turboacc设置用
-# sed -i '/fullcone_nat/s/[0-9]/0/' feeds/luci/applications/luci-app-turboacc/root/etc/config/turboacc
+sed -i '/fullcone_nat/s/[0-9]/0/' feeds/luci/applications/luci-app-turboacc/root/etc/config/turboacc
 # lean清除登录密码password
-sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
+# sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
 # 默认开启Wifi，官方openwrt-23.05和旧的版本要开启
 # sed -i 's/disabled=1/disabled=0/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 默认开启Wifi，官方openwrt-24.10和新的版本要开启
@@ -67,7 +67,7 @@ set dhcp.lan.start='50'
 set dhcp.lan.limit='205'
 set network.wan.proto=pppoe
 set network.wan.keepalive='2 120'
-# delete network.wan6
+delete network.wan6
 # set network.wan6.proto='static'
 # set network.wan6.ipaddr='192.168.2.11/24'
 set firewall.Download='rule'
@@ -77,8 +77,8 @@ set firewall.Download.name='Download'
 set firewall.Download.dest_port='56681 56682 56683'
 set firewall.Download.family='ipv6'
 set firewall.Download.target='ACCEPT'
-# set firewall.@defaults[-1].flow_offloading='1'
-# set firewall.@defaults[-1].flow_offloading_hw='1'
+set firewall.@defaults[-1].flow_offloading='1'
+set firewall.@defaults[-1].flow_offloading_hw='1'
 EOI
 exit 0
 EOF
