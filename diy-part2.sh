@@ -33,7 +33,7 @@ sed -i '/enabled/s/0/1/' feeds/packages/net/miniupnpd/files/upnpd.config
 # 默认关闭 全锥型NAT，luci-app-turboacc设置用
 sed -i '/fullcone_nat/s/[0-9]/0/' feeds/luci/applications/luci-app-turboacc/root/etc/config/turboacc
 # lean清除登录密码password
-# sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
+sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
 # 默认开启Wifi，官方openwrt-23.05和旧的版本要开启
 # sed -i 's/disabled=1/disabled=0/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 默认开启Wifi，官方openwrt-24.10和新的版本要开启
