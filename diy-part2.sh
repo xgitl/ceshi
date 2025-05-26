@@ -67,7 +67,6 @@ set dhcp.lan.start='50'
 set dhcp.lan.limit='205'
 set network.wan.proto=pppoe
 set network.wan.keepalive='2 120'
-delete network.wan6
 # set network.wan6.proto='static'
 # set network.wan6.ipaddr='192.168.2.11/24'
 set firewall.Download='rule'
@@ -77,8 +76,6 @@ set firewall.Download.name='Download'
 set firewall.Download.dest_port='56681 56682 56683'
 set firewall.Download.family='ipv6'
 set firewall.Download.target='ACCEPT'
-set firewall.@defaults[-1].flow_offloading='1'
-set firewall.@defaults[-1].flow_offloading_hw='1'
 EOI
 exit 0
 EOF
