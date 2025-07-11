@@ -84,14 +84,15 @@ EOF
 # 绕过服务器地址，绕过中国大陆 IP，WAN 接口名称，UDP 流量转发，绕过中国大陆 IPv6，自动更新大陆白名单，启用统一延迟
 sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\tlist intranet_allowed_wan_name 'pppoe-wan'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption chnr_auto_update '1'\n\toption enable_unified_delay '1'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 使用 Redir-Host 模式
-sed -i "/en_mode/s/'.*'/'redir-host'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
-sed -i "/operation_mode/s/'.*'/'redir-host'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+sed -i "s/fake-ip/redir-host/g" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 仅允许常用端口流量
 sed -i "/common_ports/s/'.*'/'21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # IPv6 流量代理
 sed -i "/ipv6_enable/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 允许 IPv6 类型 DNS 解析
 sed -i "/ipv6_dns/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# 开启 Smart 内核
+sed -i "/smart_enable/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 自定义上游 DNS 服务器
 sed -i "/enable_custom_dns/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 与 DNS 服务器的连接遵循配置文件中的规则
@@ -145,24 +146,28 @@ config groups
 config groups
 	option enabled '1'
 	option config 'all'
-	option type 'url-test'
+	option type 'smart'
 	option name '自动'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '5000'
-	option tolerance '30'
+	option strategy_smart 'round-robin'
+	option uselightgbm 'false'
+	option collectdata 'false'
 	option old_name_cfg '自动'
 	option old_name '自动'
 
 config groups
 	option enabled '1'
 	option config 'all'
-	option type 'url-test'
+	option type 'smart'
 	option name '美国'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '5000'
-	option tolerance '30'
+	option strategy_smart 'round-robin'
+	option uselightgbm 'false'
+	option collectdata 'false'
 	option policy_filter '(?i)(美国|U.?S|🇺🇸|America|States)'
 	option old_name_cfg '美国'
 	option old_name '美国'
@@ -170,12 +175,14 @@ config groups
 config groups
 	option enabled '1'
 	option config 'all'
-	option type 'url-test'
+	option type 'smart'
 	option name '新加坡'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '5000'
-	option tolerance '30'
+	option strategy_smart 'round-robin'
+	option uselightgbm 'false'
+	option collectdata 'false'
 	option policy_filter '(?i)(新加坡|SG|🇸🇬|Sing)'
 	option old_name_cfg '新加坡'
 	option old_name '新加坡'
@@ -183,12 +190,14 @@ config groups
 config groups
 	option enabled '1'
 	option config 'all'
-	option type 'url-test'
+	option type 'smart'
 	option name '台湾'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '5000'
-	option tolerance '30'
+	option strategy_smart 'round-robin'
+	option uselightgbm 'false'
+	option collectdata 'false'
 	option policy_filter '(?i)(台|TW|🇹🇼|Tai)'
 	option old_name_cfg '台湾'
 	option old_name '台湾'
@@ -196,12 +205,14 @@ config groups
 config groups
 	option enabled '1'
 	option config 'all'
-	option type 'url-test'
+	option type 'smart'
 	option name '香港'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '5000'
-	option tolerance '30'
+	option strategy_smart 'round-robin'
+	option uselightgbm 'false'
+	option collectdata 'false'
 	option policy_filter '(?i)(港|HK|🇭🇰|Hong)'
 	option old_name_cfg '香港'
 	option old_name '香港'
@@ -209,12 +220,14 @@ config groups
 config groups
 	option enabled '1'
 	option config 'all'
-	option type 'url-test'
+	option type 'smart'
 	option name '冲冲冲'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '5000'
-	option tolerance '30'
+	option strategy_smart 'round-robin'
+	option uselightgbm 'false'
+	option collectdata 'false'
 	option policy_filter '(?i)^(?!.*(坡|SG|🇸🇬|Sing|马来西亚|MY|🇲🇾|Malaysia|澳|AU|🇦🇺|MO|🇲🇴|Macao|港|HK|🇭🇰|Hong|日本|JP|🇯🇵|Japan|印度尼西亚|印尼|ID|🇮🇩|Indonesia|新西兰|NZ|🇳🇿|Zealand|越|VN|🇻🇳|Viet)).*'
 	option old_name_cfg '冲冲冲'
 	option old_name '冲冲冲'
@@ -354,7 +367,7 @@ config rule_providers
 
 echo "
 'rule-set:dl2': [114.114.114.114, 119.29.29.29, 223.5.5.5]
-'rule-set:us,sg,tw,hk,YouTube,dl,gfw': [https://dns.google/dns-query, https://cloudflare-dns.com/dns-query, https://doh.opendns.com/dns-query]" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
+'rule-set:us,sg,tw,hk,YouTube,dl,gfw': [https://dns.google/dns-query, https://cloudflare-dns.com/dns-query, https://doh.opendns.com/dns-query, https://dns.quad9.net/dns-query]" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
 echo "- MATCH,DIRECT" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
