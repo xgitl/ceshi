@@ -67,8 +67,6 @@ set dhcp.lan.start='50'
 set dhcp.lan.limit='205'
 set network.wan.proto=pppoe
 set network.wan.keepalive='2 120'
-# set network.wan6.proto='static'
-# set network.wan6.ipaddr='192.168.2.11/24'
 set firewall.Download='rule'
 set firewall.Download.src='wan'
 set firewall.Download.dest='lan'
@@ -76,6 +74,66 @@ set firewall.Download.name='Download'
 set firewall.Download.dest_port='56681 56682 56683'
 set firewall.Download.family='ipv6'
 set firewall.Download.target='ACCEPT'
+EOI
+exit 0
+EOF
+
+cat << EOF > package/base-files/files/etc/uci-defaults/98-custom
+WIFI_DEV="\$(uci get wireless.@wifi-iface[0].device)"
+uci -q batch << EOI
+set network.guest_dev='device'
+set network.guest_dev.type='bridge'
+set network.guest_dev.name='br-guest'
+set network.guest_dev.bridge_empty='1'
+set network.guest='interface'
+set network.guest.proto='static'
+set network.guest.device='br-guest'
+set network.guest.ipaddr='192.168.4.1/24'
+set network.guest.ip6assign='64'
+set wireless.guest='wifi-iface'
+set wireless.guest.device="\${WIFI_DEV}"
+set wireless.guest.mode='ap'
+set wireless.guest.network='guest'
+set wireless.guest.ssid='访客'
+set wireless.guest.encryption='none'
+set wireless.guest.isolate='1'
+set dhcp.guest='dhcp'
+set dhcp.guest.interface='guest'
+set dhcp.guest.start='20'
+set dhcp.guest.limit='235'
+set dhcp.guest.leasetime='2h'
+set dhcp.guest.ra='server'
+set dhcp.guest.dhcpv6='server'
+add_list dhcp.guest.ra_flags='managed-config'
+add_list dhcp.guest.ra_flags='other-config'
+set firewall.guest="zone"
+set firewall.guest.name="guest"
+set firewall.guest.network="guest"
+set firewall.guest.input="REJECT"
+set firewall.guest.output="ACCEPT"
+set firewall.guest.forward="REJECT"
+set firewall.guest_wan="forwarding"
+set firewall.guest_wan.src="guest"
+set firewall.guest_wan.dest="wan"
+set firewall.guest_dns="rule"
+set firewall.guest_dns.src="guest"
+set firewall.guest_dns.name="Allow-DNS-Guest"
+set firewall.guest_dns.dest_port="53"
+set firewall.guest_dns.target="ACCEPT"
+set firewall.guest_dhcp="rule"
+set firewall.guest_dhcp.src="guest"
+set firewall.guest_dhcp.name="Allow-DHCP-Guest"
+set firewall.guest_dhcp.proto="udp"
+set firewall.guest_dhcp.dest_port="67"
+set firewall.guest_dhcp.family="ipv4"
+set firewall.guest_dhcp.target="ACCEPT"
+set firewall.guest_dhcp6="rule"
+set firewall.guest_dhcp6.src="guest"
+set firewall.guest_dhcp6.name="Allow-DHCPv6-Guest"
+set firewall.guest_dhcp6.proto="udp"
+set firewall.guest_dhcp6.dest_port="547"
+set firewall.guest_dhcp6.family="ipv6"
+set firewall.guest_dhcp6.target="ACCEPT"
 EOI
 exit 0
 EOF
