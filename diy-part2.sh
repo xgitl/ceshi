@@ -229,7 +229,7 @@ config groups
 	option policy_filter '(?i)^(?!.*(坡|SG|🇸🇬|Sing|马来西亚|MY|🇲🇾|Malaysia|澳|AU|🇦🇺|MO|🇲🇴|Macao|港|HK|🇭🇰|Hong|日本|JP|🇯🇵|Japan|印度尼西亚|印尼|ID|🇮🇩|Indonesia|新西兰|NZ|🇳🇿|Zealand|越|VN|🇻🇳|Viet)).*'
 	option old_name_cfg '冲冲冲'
 	option old_name '冲冲冲'
- 
+
 config rule_providers
 	option enabled '1'
 	option config 'all'
