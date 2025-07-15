@@ -229,6 +229,18 @@ config groups
 	option policy_filter '(?i)^(?!.*(坡|SG|🇸🇬|Sing|马来西亚|MY|🇲🇾|Malaysia|澳|AU|🇦🇺|MO|🇲🇴|Macao|港|HK|🇭🇰|Hong|日本|JP|🇯🇵|Japan|印度尼西亚|印尼|ID|🇮🇩|Indonesia|新西兰|NZ|🇳🇿|Zealand|越|VN|🇻🇳|Viet)).*'
 	option old_name_cfg '冲冲冲'
 	option old_name '冲冲冲'
+ 
+config rule_providers
+	option enabled '1'
+	option config 'all'
+	option name 'Lan'
+	option type 'http'
+	option format 'yaml'
+	option behavior 'classical'
+	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Lan/Lan_No_Resolve.yaml'
+	option interval '300000'
+	option position '1'
+	option group 'DIRECT'
 
 config rule_providers
 	option enabled '1'
