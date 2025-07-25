@@ -357,7 +357,7 @@ echo "
 
 echo "- MATCH,DIRECT" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
-rm -rf feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/*
+find feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/ -mindepth 1 -maxdepth 1 ! -iname "*meta*" -exec rm -rf {} + && find feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/metacubexd/ -mindepth 1 ! -iname "*index*" -exec rm -rf {} +
 curl -sL https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui
 mv feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/dist feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/zashboard && rm -rf /tmp/meta.zip
 rm -rf feeds/openclash/luci-app-openclash/root/etc/openclash/game_rules/*
