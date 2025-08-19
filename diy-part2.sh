@@ -149,7 +149,7 @@ config groups
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '5000'
-	option strategy_smart 'round-robin'
+	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
 	option old_name_cfg '自动'
@@ -163,7 +163,7 @@ config groups
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '5000'
-	option strategy_smart 'round-robin'
+	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
 	option policy_filter '(?i)(美国|U.?S|🇺🇸|America|States)'
@@ -178,7 +178,7 @@ config groups
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '5000'
-	option strategy_smart 'round-robin'
+	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
 	option policy_filter '(?i)(新加坡|SG|🇸🇬|Sing)'
@@ -193,7 +193,7 @@ config groups
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '5000'
-	option strategy_smart 'round-robin'
+	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
 	option policy_filter '(?i)(台|TW|🇹🇼|Tai)'
@@ -208,7 +208,7 @@ config groups
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '5000'
-	option strategy_smart 'round-robin'
+	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
 	option policy_filter '(?i)(港|HK|🇭🇰|Hong)'
@@ -223,7 +223,7 @@ config groups
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
 	option test_interval '5000'
-	option strategy_smart 'round-robin'
+	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
 	option policy_filter '(?i)^(?!.*(坡|SG|🇸🇬|Sing|马来西亚|MY|🇲🇾|Malaysia|澳|AU|🇦🇺|MO|🇲🇴|Macao|港|HK|🇭🇰|Hong|日本|JP|🇯🇵|Japan|印度尼西亚|印尼|ID|🇮🇩|Indonesia|新西兰|NZ|🇳🇿|Zealand|越|VN|🇻🇳|Viet)).*'
@@ -376,4 +376,3 @@ EOF
 mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/config && touch feeds/openclash/luci-app-openclash/root/etc/openclash/config/config.yaml
 # mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
 # curl -sL https://raw.githubusercontent.com/vernesong/openclash/core/master/smart/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash_meta
-# chmod +x feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash*
