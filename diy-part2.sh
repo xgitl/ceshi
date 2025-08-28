@@ -333,7 +333,7 @@ config rule_providers
 	option type 'http'
 	option behavior 'domain'
 	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Global/Global_Domain.yaml'
+	option url 'https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt'
 	option interval '300000'
 	option position '1'
 	option group 'Proxy'
