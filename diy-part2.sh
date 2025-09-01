@@ -362,7 +362,6 @@ curl -sL https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cd
 mv feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/dist feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/zashboard && rm -rf /tmp/meta.zip
 rm -rf feeds/openclash/luci-app-openclash/root/etc/openclash/game_rules/*
 rm -rf feeds/openclash/luci-app-openclash/root/etc/openclash/rule_provider/*
-echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/Country.mmdb
 echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/china_ip_route.ipset
 echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/china_ip6_route.ipset
 echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/GeoSite.dat
