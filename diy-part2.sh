@@ -45,7 +45,7 @@ sed -i "s/ssid=.*/ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G/g" package
 # 默认开启KV，lean要开启,
 sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 默认开启KV，官方openwrt-23.05和旧的版本要开启
-sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_${name}.key=12345678\n\t\t\tset wireless.default_${name}.ieee80211k=1\n\t\t\tset wireless.default_${name}.wnm_sleep_mode=1\n\t\t\tset wireless.default_${name}.wnm_sleep_mode_no_keys=1\n\t\t\tset wireless.default_${name}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+# sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_${name}.key=12345678\n\t\t\tset wireless.default_${name}.ieee80211k=1\n\t\t\tset wireless.default_${name}.wnm_sleep_mode=1\n\t\t\tset wireless.default_${name}.wnm_sleep_mode_no_keys=1\n\t\t\tset wireless.default_${name}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 默认开启kv，官方openwrt-24.10和新的版本要开启
 # sed -i "s/key='.*'/key='12345678'\nset \${si}.ieee80211k='1'\nset \${si}.wnm_sleep_mode='1'\nset \${si}.wnm_sleep_mode_no_keys='1'\nset \${si}.bss_transition='1'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 # kv开启的话wifi要设置密码要不然wifi不能启动，官方openwrt-24.10和新的版本要开启
