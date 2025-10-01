@@ -45,7 +45,7 @@ sed -i "s/ssid=.*/ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G/g" package
 # 默认开启KV，lean要开启,
 sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 默认开启KV，官方openwrt-23.05和旧的版本要开启
-# sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_${name}.key=12345678\n\t\t\tset wireless.default_${name}.ieee80211k=1\n\t\t\tset wireless.default_${name}.wnm_sleep_mode=1\n\t\t\tset wireless.default_${name}.wnm_sleep_mode_no_keys=1\n\t\t\tset wireless.default_${name}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_${name}.key=12345678\n\t\t\tset wireless.default_${name}.ieee80211k=1\n\t\t\tset wireless.default_${name}.wnm_sleep_mode=1\n\t\t\tset wireless.default_${name}.wnm_sleep_mode_no_keys=1\n\t\t\tset wireless.default_${name}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 默认开启kv，官方openwrt-24.10和新的版本要开启
 # sed -i "s/key='.*'/key='12345678'\nset \${si}.ieee80211k='1'\nset \${si}.wnm_sleep_mode='1'\nset \${si}.wnm_sleep_mode_no_keys='1'\nset \${si}.bss_transition='1'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 # kv开启的话wifi要设置密码要不然wifi不能启动，官方openwrt-24.10和新的版本要开启
@@ -67,6 +67,9 @@ set dhcp.lan.start='50'
 set dhcp.lan.limit='205'
 set network.wan.proto=pppoe
 set network.wan.keepalive='2 120'
+delete network.wan6
+# set network.wan6.proto='static'
+# set network.wan6.ipaddr='192.168.1.11/24'
 set firewall.Download='rule'
 set firewall.Download.src='wan'
 set firewall.Download.dest='lan'
@@ -79,8 +82,8 @@ exit 0
 EOF
 
 # Clash配置
-# 绕过服务器地址，绕过中国大陆 IP，UDP 流量转发，绕过中国大陆 IPv6，自动更新大陆白名单，启用统一延迟
-sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption chnr_auto_update '1'\n\toption enable_unified_delay '1'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# 绕过服务器地址，绕过中国大陆 IP，UDP 流量转发，绕过中国大陆 IPv6，自动更新大陆白名单，启用统一延迟，启用 LightGBM 模型，自动更新模型
+sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption chnr_auto_update '1'\n\toption enable_unified_delay '1'\n\toption smart_enable_lgbm '1'\n\toption lgbm_auto_update '1'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 使用 Redir-Host 模式
 sed -i "s/fake-ip/redir-host/g" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 仅允许常用端口流量
@@ -103,7 +106,10 @@ sed -i "/enable_custom_clash_rules/s/'.*'/'1'/" feeds/openclash/luci-app-opencla
 cat << EOF > feeds/openclash/luci-app-openclash/root/etc/uci-defaults/97-custom
 uci -q batch << EOI
 set openclash.config.enable='0'
+set openclash.@dns_servers[2].node_resolve='1'
+set openclash.@dns_servers[4].node_resolve='1'
 set openclash.@dns_servers[6].enabled='1'
+set openclash.@dns_servers[6].node_resolve='1'
 set openclash.@dns_servers[7].enabled='0'
 set openclash.@dns_servers[8].enabled='0'
 EOI
@@ -375,3 +381,4 @@ EOF
 mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/config && touch feeds/openclash/luci-app-openclash/root/etc/openclash/config/config.yaml
 mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
 curl -sL https://raw.githubusercontent.com/vernesong/openclash/core/master/smart/clash-linux-mipsle-softfloat.tar.gz | tar xOvz > feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash_meta
+chmod +x feeds/openclash/luci-app-openclash/root/etc/openclash/core/clash*
