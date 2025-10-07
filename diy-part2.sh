@@ -82,12 +82,8 @@ exit 0
 EOF
 
 # Clash配置
-# 绕过服务器地址，绕过中国大陆 IP，UDP 流量转发，绕过中国大陆 IPv6，自动更新大陆白名单，启用统一延迟，启用 LightGBM 模型，自动更新模型
-sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption chnr_auto_update '1'\n\toption enable_unified_delay '1'\n\toption smart_enable_lgbm '1'\n\toption lgbm_auto_update '1'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
-# 使用 Redir-Host 模式
-sed -i "s/fake-ip/redir-host/g" feeds/openclash/luci-app-openclash/root/etc/config/openclash
-# 仅允许常用端口流量
-sed -i "/common_ports/s/'.*'/'21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# 绕过服务器地址，绕过中国大陆 IP，UDP 流量转发，绕过中国大陆 IPv6，自动更新大陆白名单，Fake-IP-Filter-Mode，启用 TCP 并发，启用统一延迟，启用 LightGBM 模型，自动更新模型
+sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption chnr_auto_update '1'\n\toption custom_fakeip_filter_mode 'whitelist'\n\toption enable_tcp_concurrent '1'\n\toption enable_unified_delay '1'\n\toption smart_enable_lgbm '1'\n\toption lgbm_auto_update '1'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # IPv6 流量代理
 sed -i "/ipv6_enable/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 允许 IPv6 类型 DNS 解析
@@ -97,19 +93,18 @@ sed -i "/smart_enable/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/c
 # 自定义上游 DNS 服务器
 sed -i "/enable_custom_dns/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 与 DNS 服务器的连接遵循配置文件中的规则
-sed -i "/respect_rules/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# sed -i "/respect_rules/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# Fake-IP-Filter
+sed -i "/fakeip_filter/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # Nameserver-Policy
-sed -i "/custom_name_policy/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# sed -i "/custom_name_policy/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 自定义规则
 sed -i "/enable_custom_clash_rules/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 
 cat << EOF > feeds/openclash/luci-app-openclash/root/etc/uci-defaults/97-custom
 uci -q batch << EOI
 set openclash.config.enable='0'
-set openclash.@dns_servers[2].node_resolve='1'
-set openclash.@dns_servers[4].node_resolve='1'
 set openclash.@dns_servers[6].enabled='1'
-set openclash.@dns_servers[6].node_resolve='1'
 set openclash.@dns_servers[7].enabled='0'
 set openclash.@dns_servers[8].enabled='0'
 EOI
@@ -311,18 +306,6 @@ config rule_providers
 config rule_providers
 	option enabled '1'
 	option config 'all'
-	option name 'dl2'
-	option type 'http'
-	option behavior 'classical'
-	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dl2.yaml'
-	option interval '3000000'
-	option position '1'
-	option group 'Proxy'
-
-config rule_providers
-	option enabled '1'
-	option config 'all'
 	option name 'dl'
 	option type 'http'
 	option behavior 'classical'
@@ -357,10 +340,7 @@ config rule_providers
 	option group 'Proxy'
 " >> feeds/openclash/luci-app-openclash/root/etc/config/openclash
 
-echo "
-'rule-set:dl2': [114.114.114.114, 119.29.29.29, 223.5.5.5]
-'rule-set:us,sg,tw,hk,YouTube,dl,gfw': [https://dns.google/dns-query, https://cloudflare-dns.com/dns-query, https://doh.opendns.com/dns-query, https://dns.quad9.net/dns-query]" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
-
+echo "rule-set:us,sg,tw,hk,YouTube,dl,gfw,ip" > feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_fake_filter.list
 echo "- MATCH,DIRECT" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
 find feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/ -mindepth 1 -maxdepth 1 ! -iname "*meta*" -exec rm -rf {} + && find feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/metacubexd/ -mindepth 1 ! -iname "*index*" -exec rm -rf {} +
