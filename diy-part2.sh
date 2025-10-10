@@ -310,6 +310,18 @@ config rule_providers
 config rule_providers
 	option enabled '1'
 	option config 'all'
+	option name 'dl2'
+	option type 'http'
+	option behavior 'classical'
+	option format 'yaml'
+	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dl2.yaml'
+	option interval '3000000'
+	option position '1'
+	option group 'Proxy'
+
+config rule_providers
+	option enabled '1'
+	option config 'all'
 	option name 'dl'
 	option type 'http'
 	option behavior 'classical'
