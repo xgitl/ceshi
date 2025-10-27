@@ -82,8 +82,8 @@ exit 0
 EOF
 
 # Clash配置
-# 绕过服务器地址，绕过中国大陆 IP，UDP 流量转发，绕过中国大陆 IPv6，自动更新大陆白名单，启用 TCP 并发，启用统一延迟，启用 LightGBM 模型，自动更新模型
-sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption chnr_auto_update '1'\n\toption enable_tcp_concurrent '1'\n\toption enable_unified_delay '1'\n\toption smart_enable_lgbm '1'\n\toption lgbm_auto_update '1'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# 绕过服务器地址，绕过中国大陆 IP，UDP 流量转发，绕过中国大陆 IPv6，自动更新 GeoIP MMDB 数据库，自动更新 GeoSite 数据库，自动更新大陆白名单，启用 TCP 并发，启用统一延迟，启用 LightGBM 模型，自动更新模型
+sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption geo_auto_update '1'\n\toption geosite_auto_update '1'\n\toption chnr_auto_update '1'\n\toption enable_tcp_concurrent '1'\n\toption enable_unified_delay '1'\n\toption smart_enable_lgbm '1'\n\toption lgbm_auto_update '1'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 使用 Redir-Host 模式
 sed -i "s/fake-ip/redir-host/g" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 仅允许常用端口流量
@@ -92,6 +92,10 @@ sed -i "/common_ports/s/'.*'/'21 22 23 53 80 123 143 194 443 465 587 853 993 995
 sed -i "/ipv6_enable/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 允许 IPv6 类型 DNS 解析
 sed -i "/ipv6_dns/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# 自定义GeoIP MMDB 数据库更新地址
+sed -i "/geo_custom/s/'.*'/'https:\/\/raw.githubusercontent.com\/Loyalsoldier\/geoip\/release\/Country-asn.mmdb'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# 自定义GeoSite 数据库更新地址
+sed -i "/geosite_custom/s/'.*'/'https:\/\/github.com\/Loyalsoldier\/v2ray-rules-dat\/releases\/latest\/download\/geosite.dat'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 开启 Smart 内核
 sed -i "/smart_enable/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 自定义上游 DNS 服务器
@@ -111,6 +115,8 @@ set openclash.config.enable='0'
 set openclash.@dns_servers[6].enabled='1'
 set openclash.@dns_servers[7].enabled='0'
 set openclash.@dns_servers[8].enabled='0'
+set openclash.@dns_servers[24].enabled='0'
+set openclash.@dns_servers[25].enabled='0'
 EOI
 exit 0
 EOF
@@ -298,18 +304,6 @@ config rule_providers
 config rule_providers
 	option enabled '1'
 	option config 'all'
-	option name 'YouTube'
-	option type 'http'
-	option behavior 'classical'
-	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube_No_Resolve.yaml'
-	option interval '300000'
-	option position '1'
-	option group 'YouTube'
-
-config rule_providers
-	option enabled '1'
-	option config 'all'
 	option name 'dl2'
 	option type 'http'
 	option behavior 'classical'
@@ -330,53 +324,36 @@ config rule_providers
 	option interval '3000000'
 	option position '1'
 	option group 'Proxy'
-
-config rule_providers
-	option enabled '1'
-	option config 'all'
-	option name 'gfw'
-	option type 'http'
-	option behavior 'domain'
-	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt'
-	option interval '300000'
-	option position '1'
-	option group 'Proxy'
-
-config rule_providers
-	option enabled '1'
-	option config 'all'
-	option name 'ip'
-	option type 'http'
-	option behavior 'classical'
-	option format 'yaml'
-	option url 'https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Proxy/Proxy_No_Resolve.yaml'
-	option interval '300000'
-	option position '1'
-	option group 'Proxy'
 " >> feeds/openclash/luci-app-openclash/root/etc/config/openclash
 
-echo "
-'rule-set:dl2': [114.114.114.114, 119.29.29.29, 223.5.5.5]
-'rule-set:us,sg,tw,hk,YouTube,dl,gfw': [1.1.1.1, 8.8.8.8, 9.9.9.9, 208.67.222.222]" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
+echo '
+"rule-set:dl2": [114.114.114.114, 119.29.29.29, 223.5.5.5]
+"rule-set:us,sg,tw,hk,dl": [1.1.1.1, 8.8.8.8, 9.9.9.9, 208.67.222.222]
+"geosite:gfw": [1.1.1.1, 8.8.8.8, 9.9.9.9, 208.67.222.222]' >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
-# echo "rule-set:us,sg,tw,hk,YouTube,dl,gfw,ip" > feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_fake_filter.list
-echo "- MATCH,DIRECT" >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
+# echo 'rule-set:us,sg,tw,hk,dl
+# geosite:gfw' > feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_fake_filter.list
+
+echo '
+- GEOSITE,youtube,YouTube
+- GEOSITE,gfw,Proxy
+- GEOIP,twitter,Proxy,no-resolve
+- GEOIP,telegram,Proxy,no-resolve
+- MATCH,DIRECT' >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_rules_2.list
 
 find feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/ -mindepth 1 -maxdepth 1 ! -iname "*meta*" -exec rm -rf {} + && find feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/metacubexd/ -mindepth 1 ! -iname "*index*" -exec rm -rf {} +
-curl -sL https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip -o /tmp/meta.zip && unzip /tmp/meta.zip -d feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui
+curl -sLo /tmp/meta.zip https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip && unzip /tmp/meta.zip -d feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui
 mv feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/dist feeds/openclash/luci-app-openclash/root/usr/share/openclash/ui/zashboard && rm -rf /tmp/meta.zip
 rm -rf feeds/openclash/luci-app-openclash/root/etc/openclash/game_rules/*
 rm -rf feeds/openclash/luci-app-openclash/root/etc/openclash/rule_provider/*
-echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/china_ip_route.ipset
-echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/china_ip6_route.ipset
-echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/GeoSite.dat
+curl -sLo feeds/openclash/luci-app-openclash/root/etc/openclash/Country.mmdb https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country-asn.mmdb
+# echo -n > feeds/openclash/luci-app-openclash/root/etc/openclash/GeoSite.dat
 
-cat << EOF > feeds/openclash/luci-app-openclash/root/etc/openclash/rule_provider/gfw.yaml
-payload:
-- '+.github.com'
-- '+.githubusercontent.com'
-EOF
+# cat << EOF > feeds/openclash/luci-app-openclash/root/etc/openclash/rule_provider/gfw.yaml
+# payload:
+# - '+.github.com'
+# - '+.githubusercontent.com'
+# EOF
 
 mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/config && touch feeds/openclash/luci-app-openclash/root/etc/openclash/config/config.yaml
 mkdir -p feeds/openclash/luci-app-openclash/root/etc/openclash/core
