@@ -15,15 +15,17 @@
 # 修改固件名显示内核版本
 sed -i 's/IMG_PREFIX:=/IMG_PREFIX:=$(LINUX_VERSION)-/g' include/image.mk
 # 修改默认IP
-sed -i '/lan) ipad/s/".*"/"192.168.0.1"/' package/base-files/files/bin/config_generate
+# sed -i '/lan) ipad/s/".*"/"192.168.0.1"/' package/base-files/files/bin/config_generate
+# 修改默认IP，lean默认用luci2配置路径不一样
+sed -i '/lan) ipad/s/".*"/"192.168.0.1"/' package/base-files/luci2/bin/config_generate
 # IPv6 分配长度设置为62可支持4个子网，63可支持两个子网
-sed -i "s/ip6assign='.*'/ip6assign='62'/" package/base-files/files/bin/config_generate
+# sed -i "s/ip6assign='.*'/ip6assign='62'/" package/base-files/files/bin/config_generate
 # IPv6 分配长度设置为62可支持4个子网，63可支持两个子网，lean默认用luci2配置路径不一样
-# sed -i "s/ip6assign='.*'/ip6assign='62'/" package/base-files/luci2/bin/config_generate
+sed -i "s/ip6assign='.*'/ip6assign='62'/" package/base-files/luci2/bin/config_generate
 # 修改主机名
-sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/files/bin/config_generate
+# sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/files/bin/config_generate
 # 修改主机名，lean默认用luci2配置路径不一样
-# sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/luci2/bin/config_generate
+sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/luci2/bin/config_generate
 # 更改时区，官方openwrt要更改
 # sed -i "s/'UTC'/'CST-8'\n\t\tset system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
 # 修改wan默认为pppoe拨号，官方openwrt有效，lean无效，已在uci中设置
