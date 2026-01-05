@@ -84,7 +84,7 @@ EOF
 
 # Clash配置
 # 绕过服务器地址，绕过中国大陆 IP，UDP 流量转发，绕过中国大陆 IPv6，自动更新 GeoIP MMDB 数据库，自动更新 GeoSite 数据库，自动更新大陆白名单，启用 TCP 并发，启用统一延迟，启用 LightGBM 模型，自动更新模型
-sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption geo_auto_update '1'\n\toption geosite_auto_update '1'\n\toption chnr_auto_update '1'\n\toption enable_tcp_concurrent '1'\n\toption enable_unified_delay '1'\n\toption smart_enable_lgbm '1'\n\toption lgbm_auto_update '1'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption geo_auto_update '1'\n\toption geo_update_week_time '1'\n\toption geo_update_day_time '5'\n\toption geosite_auto_update '1'\n\toption geosite_update_week_time '1'\n\toption geosite_update_day_time '5'\n\toption chnr_auto_update '1'\n\toption chnr_update_week_time '1'\n\toption chnr_update_day_time '5'\n\toption enable_tcp_concurrent '1'\n\toption enable_unified_delay '1'\n\toption smart_enable_lgbm '1'\n\toption lgbm_auto_update '1'\n\toption lgbm_update_interval '168'\n\toption lgbm_custom_url 'https://github.com/vernesong/mihomo/releases/download/LightGBM-Model/Model.bin'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 使用 Redir-Host 模式
 sed -i "s/fake-ip/redir-host/g" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 仅允许常用端口流量
