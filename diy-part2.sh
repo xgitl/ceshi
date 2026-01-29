@@ -71,9 +71,9 @@ cat << EOF > package/base-files/files/etc/uci-defaults/99-custom
 uci -q batch << EOI
 set dhcp.lan.start='50'
 set dhcp.lan.limit='205'
-set network.wan.proto=pppoe
-set network.wan.keepalive='2 120'
-delete network.wan6
+# set network.wan.proto=pppoe
+# set network.wan.keepalive='2 120'
+# delete network.wan6
 # set network.wan6.proto='static'
 # set network.wan6.ipaddr='192.168.1.11/24'
 set firewall.Download='rule'
