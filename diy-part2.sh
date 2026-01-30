@@ -28,12 +28,6 @@ sed -i "s/ip6assign='.*'/ip6assign='62'/" package/base-files/luci/bin/config_gen
 sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/luci/bin/config_generate
 # 更改时区，官方openwrt要更改
 # sed -i "s/'UTC'/'CST-8'\n\t\tset system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
-# 修改wan默认为pppoe拨号，官方openwrt有效，lean无效，已在uci中设置
-sed -i 's/proto='.*'/proto='pppoe'/g' package/base-files/files/bin/config_generate
-sed -i 's/-dhcp/-pppoe/g' package/base-files/files/lib/functions/uci-defaults.sh
-sed -i 's/-proto='.*'/proto='pppoe'/g' package/base-files/luci/bin/config_generate
-sed -i 's/-dhcp/-pppoe/g' package/base-files/luci/lib/functions/uci-defaults.sh
-sed -i 's/keepalive=".*"/keepalive="120 2"/g' package/network/services/ppp/files/ppp.sh
 # 开启 UPnP，官方openwrt，lean都要开启
 sed -i '/enabled/s/0/1/' feeds/packages/net/miniupnpd/files/upnpd.config
 # 默认关闭 全锥型NAT，luci-app-turboacc设置用
@@ -71,8 +65,8 @@ cat << EOF > package/base-files/files/etc/uci-defaults/99-custom
 uci -q batch << EOI
 set dhcp.lan.start='50'
 set dhcp.lan.limit='205'
-# set network.wan.proto=pppoe
-# set network.wan.keepalive='2 120'
+set network.wan.proto=pppoe
+set network.wan.keepalive='2 120'
 delete network.wan6
 # set network.wan6.proto='static'
 # set network.wan6.ipaddr='192.168.1.11/24'
