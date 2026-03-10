@@ -82,8 +82,8 @@ exit 0
 EOF
 
 # Clash配置
-# 绕过服务器地址，绕过中国大陆 IP，UDP 流量转发，绕过中国大陆 IPv6，自动更新 GeoIP MMDB 数据库，自动更新 GeoSite 数据库，自动更新大陆白名单，启用 TCP 并发，启用统一延迟，启用 LightGBM 模型，自动更新模型
-sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption geo_auto_update '1'\n\toption geo_update_week_time '1'\n\toption geo_update_day_time '5'\n\toption geosite_auto_update '1'\n\toption geosite_update_week_time '1'\n\toption geosite_update_day_time '5'\n\toption chnr_auto_update '1'\n\toption chnr_update_week_time '1'\n\toption chnr_update_day_time '5'\n\toption enable_tcp_concurrent '1'\n\toption enable_unified_delay '1'\n\toption smart_enable_lgbm '1'\n\toption lgbm_auto_update '1'\n\toption lgbm_update_interval '168'\n\toption lgbm_custom_url 'https://github.com/vernesong/mihomo/releases/download/LightGBM-Model/Model.bin'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# 绕过服务器地址，绕过中国大陆 IP，UDP 流量转发，绕过中国大陆 IPv6，设置默认面板，自动更新 GeoIP MMDB 数据库，自动更新 GeoSite 数据库，自动更新大陆白名单，启用 TCP 并发，关闭流量（域名）探测
+sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption default_dashboard 'zashboard'\n\toption geo_auto_update '1'\n\toption geo_update_week_time '1'\n\toption geo_update_day_time '5'\n\toption geosite_auto_update '1'\n\toption geosite_update_week_time '1'\n\toption geosite_update_day_time '5'\n\toption chnr_auto_update '1'\n\toption chnr_update_week_time '1'\n\toption chnr_update_day_time '5'\n\toption enable_tcp_concurrent '1'\n\toption enable_meta_sniffer '0'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 使用 Redir-Host 模式
 sed -i "s/fake-ip/redir-host/g" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 仅允许常用端口流量
@@ -137,6 +137,7 @@ config groups
 	list other_group '新加坡'
 	list other_group '日本'
 	list other_group '韩国'
+	list other_group 'TW-N'
 
 config groups
 	option enabled '1'
@@ -154,7 +155,26 @@ config groups
 	list other_group '新加坡'
 	list other_group '日本'
 	list other_group '韩国'
+	list other_group 'TW-N'
 	list other_group '冲冲冲'
+
+config groups
+	option enabled '1'
+	option config 'all'
+	option type 'select'
+	option name '大流量'
+	option disable_udp 'false'
+	option old_name_cfg '大流量'
+	option old_name '大流量'
+	list other_group 'TW-N'
+	list other_group '自动'
+	list other_group 'Proxy'
+	list other_group '美国'
+	list other_group '台湾'
+	list other_group '香港'
+	list other_group '新加坡'
+	list other_group '日本'
+	list other_group '韩国'
 
 config groups
 	option enabled '1'
@@ -163,7 +183,7 @@ config groups
 	option name '自动'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '5000'
+	option test_interval '8000'
 	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
@@ -177,7 +197,7 @@ config groups
 	option name '美国'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '5000'
+	option test_interval '8000'
 	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
@@ -192,7 +212,7 @@ config groups
 	option name '台湾'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '5000'
+	option test_interval '8000'
 	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
@@ -207,7 +227,7 @@ config groups
 	option name '香港'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '5000'
+	option test_interval '8000'
 	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
@@ -222,7 +242,7 @@ config groups
 	option name '新加坡'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '5000'
+	option test_interval '8000'
 	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
@@ -237,7 +257,7 @@ config groups
 	option name '日本'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '5000'
+	option test_interval '8000'
 	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
@@ -252,7 +272,7 @@ config groups
 	option name '韩国'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '5000'
+	option test_interval '8000'
 	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
@@ -264,10 +284,24 @@ config groups
 	option enabled '1'
 	option config 'all'
 	option type 'smart'
+	option name 'TW-N'
+	option disable_udp 'false'
+	option test_url 'http://www.gstatic.com/generate_204'
+	option test_interval '8000'
+	option strategy_smart 'sticky-sessions'
+	option uselightgbm 'false'
+	option collectdata 'false'
+	option old_name_cfg 'TW-N'
+	option old_name 'TW-N'
+
+config groups
+	option enabled '1'
+	option config 'all'
+	option type 'smart'
 	option name '冲冲冲'
 	option disable_udp 'false'
 	option test_url 'http://www.gstatic.com/generate_204'
-	option test_interval '5000'
+	option test_interval '8000'
 	option strategy_smart 'sticky-sessions'
 	option uselightgbm 'false'
 	option collectdata 'false'
@@ -338,6 +372,18 @@ config rule_providers
 config rule_providers
 	option enabled '1'
 	option config 'all'
+	option name 'dll'
+	option type 'http'
+	option behavior 'classical'
+	option format 'yaml'
+	option url 'https://raw.githubusercontent.com/xgitl/gz/main/dll.yaml'
+	option interval '3000000'
+	option position '1'
+	option group '大流量'
+
+config rule_providers
+	option enabled '1'
+	option config 'all'
 	option name 'dl2'
 	option type 'http'
 	option behavior 'classical'
@@ -361,11 +407,11 @@ config rule_providers
 " >> feeds/openclash/luci-app-openclash/root/etc/config/openclash
 
 echo '
-"rule-set:dl2": [114.114.114.114, 119.29.29.29, 223.5.5.5]
-"rule-set:us,sg,tw,hk,dl": [1.1.1.1, 8.8.8.8, 9.9.9.9, 208.67.222.222]
+"rule-set:zl,dl2": [114.114.114.114, 119.29.29.29, 223.5.5.5]
+"rule-set:us,sg,tw,hk,dll,dl": [1.1.1.1, 8.8.8.8, 9.9.9.9, 208.67.222.222]
 "geosite:gfw": [1.1.1.1, 8.8.8.8, 9.9.9.9, 208.67.222.222]' >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
-# echo 'rule-set:us,sg,tw,hk,dl
+# echo 'rule-set:us,sg,tw,hk,dll,dl
 # geosite:gfw' > feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_fake_filter.list
 
 echo '
