@@ -31,9 +31,9 @@ function git_sparse_clone() {
 }
 
 # Add a feed source
-echo 'src-git openclash https://github.com/vernesong/OpenClash^79dee90996b99dbac377c220914b0d73b2941e0d' >>feeds.conf.default
+# echo 'src-git openclash https://github.com/vernesong/OpenClash' >>feeds.conf.default
 # 有旧版包可以用新版包添加到第一行
-# sed -i '1i src-git openclash https://github.com/vernesong/openclash' feeds.conf.default
+# sed -i '1i src-git openclash https://github.com/vernesong/openclash^79dee90996b99dbac377c220914b0d73b2941e0d' feeds.conf.default
 # sed -i '1i src-git openclash https://github.com/vernesong/openclash;dev' feeds.conf.default
 # sed -i '1i src-git openclash https://github.com/vernesong/openclash^fc741a805883d6105c989af9bb6688e0edd7ab32' feeds.conf.default
 # sed -i '1i src-git passwall https://github.com/xiaorouji/openwrt-passwall' feeds.conf.default
