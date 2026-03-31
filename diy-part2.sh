@@ -103,7 +103,7 @@ sed -i "/enable_custom_dns/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/
 # 与 DNS 服务器的连接遵循配置文件中的规则
 # sed -i "/respect_rules/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # Fake-IP-Filter
-sed -i "s/fakeip_filter '.*'/fakeip_filter '1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+sed -i "s/fakeip_filter '.*'/fakeip_filter '1'\n\toption custom_fakeip_filter_mode 'whitelist'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # Nameserver-Policy
 # sed -i "/custom_name_policy/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 自定义规则
