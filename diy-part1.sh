@@ -31,7 +31,7 @@ function git_sparse_clone() {
 }
 
 # Add a feed source
-# echo 'src-git openclash https://github.com/vernesong/OpenClash' >>feeds.conf.default
+echo 'src-git openclash https://github.com/vernesong/OpenClash' >>feeds.conf.default
 # 有旧版包可以用新版包添加到第一行
 # sed -i '1i src-git openclash https://github.com/vernesong/openclash' feeds.conf.default
 # sed -i '1i src-git openclash https://github.com/vernesong/openclash;dev' feeds.conf.default
