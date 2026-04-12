@@ -32,13 +32,15 @@ function git_sparse_clone() {
 
 # Add a feed source
 # echo 'src-git openclash https://github.com/vernesong/OpenClash' >>feeds.conf.default
+# echo 'src-git diskman https://github.com/lisaac/luci-app-diskman' >>feeds.conf.default
+# echo 'src-git partexp https://github.com/sirpdboy/luci-app-partexp' >>feeds.conf.default
 # 有旧版包可以用新版包添加到第一行
 sed -i '1i src-git openclash https://github.com/vernesong/openclash' feeds.conf.default
 # sed -i '1i src-git openclash https://github.com/vernesong/openclash;dev' feeds.conf.default
-# sed -i '1i src-git openclash https://github.com/vernesong/openclash^ee0d432c60e32177ba3701c62e58eb1aad352ab0' feeds.conf.default
+# sed -i '1i src-git openclash https://github.com/vernesong/openclash^fc741a805883d6105c989af9bb6688e0edd7ab32' feeds.conf.default
 # sed -i '1i src-git passwall https://github.com/xiaorouji/openwrt-passwall' feeds.conf.default
 # sed -i '1i src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages' feeds.conf.default
 # sed -i '1i src-git helloworld https://github.com/fw876/helloworld' feeds.conf.default
 # git clone --depth=1 https://github.com/ilxp/luci-app-ikoolproxy.git package/luci-app-ikoolproxy
 # git clone --depth=1 https://github.com/cnsilvan/luci-app-unblockneteasemusic.git package/neteasemusic
-git_sparse_clone ee0d432c60e32177ba3701c62e58eb1aad352ab0 https://github.com/vernesong/OpenClash openclash
+git_sparse_clone main https://github.com/Lienol/openwrt-package luci-app-control-timewol
