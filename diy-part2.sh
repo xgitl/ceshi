@@ -15,23 +15,26 @@
 # 修改固件名显示内核版本
 sed -i 's/IMG_PREFIX:=/IMG_PREFIX:=$(LINUX_VERSION)-/g' include/image.mk
 # 修改默认IP
-# sed -i '/lan) ipad/s/".*"/"192.168.0.1"/' package/base-files/files/bin/config_generate
-# 修改默认IP，lean默认用luci2配置路径不一样
-sed -i '/lan) ipad/s/".*"/"192.168.0.1"/' package/base-files/luci/bin/config_generate
+sed -i '/lan) ipad/s/".*"/"192.168.0.1"/' package/base-files/files/bin/config_generate
+# 修改默认IP，lean默认用luci配置路径不一样
+# sed -i '/lan) ipad/s/".*"/"192.168.0.1"/' package/base-files/luci/bin/config_generate
 # IPv6 分配长度设置为62可支持4个子网，63可支持两个子网
-# sed -i "s/ip6assign='.*'/ip6assign='62'/" package/base-files/files/bin/config_generate
-# IPv6 分配长度设置为62可支持4个子网，63可支持两个子网，lean默认用luci2配置路径不一样
-sed -i "s/ip6assign='.*'/ip6assign='62'/" package/base-files/luci/bin/config_generate
+sed -i "s/ip6assign='.*'/ip6assign='62'/" package/base-files/files/bin/config_generate
+# IPv6 分配长度设置为62可支持4个子网，63可支持两个子网，lean默认用luci配置路径不一样
+# sed -i "s/ip6assign='.*'/ip6assign='62'/" package/base-files/luci/bin/config_generate
 # 修改主机名
-# sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/files/bin/config_generate
-# 修改主机名，lean默认用luci2配置路径不一样
-sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/luci/bin/config_generate
-# 更改时区，官方openwrt要更改
-# sed -i "s/'UTC'/'CST-8'\n\t\tset system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
+sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/files/bin/config_generate
+# 修改主机名，lean默认用luci配置路径不一样
+# sed -i "s/hostname='.*'/hostname='OpenWrt'/" package/base-files/luci/bin/config_generate
+# 更改时区，官方openwrt24和以前的版本要更改
+# sed -i "s/timezone='.*'/timezone='CST-8'\n\t\tset system.@system[-1].zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
+# 更改时区，官方openwrt25和以后的版本要更改
+# sed -i "s/timezone='.*'/timezone='CST-8'/g" package/base-files/files/bin/config_generate
+# sed -i "s/zonename='.*'/zonename='Asia\/Shanghai'/g" package/base-files/files/bin/config_generate
 # 开启 UPnP，官方openwrt，lean都要开启
-sed -i '/enabled/s/0/1/' feeds/packages/net/miniupnpd/files/upnpd.config
+sed -i '/enabled/s/0/1/' feeds/packages/net/miniupnpd-nftables/files/upnpd.config
 # 默认关闭 全锥型NAT，luci-app-turboacc设置用
-sed -i '/fullcone_nat/s/[0-9]/0/' feeds/luci/applications/luci-app-turboacc/root/etc/config/turboacc
+# sed -i '/fullcone_nat/s/[0-9]/0/' feeds/luci/applications/luci-app-turboacc/root/etc/config/turboacc
 # lean清除登录密码password
 sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
 # 默认开启Wifi，官方openwrt-23.05和旧的版本要开启
@@ -39,11 +42,11 @@ sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
 # 默认开启Wifi，官方openwrt-24.10和新的版本要开启
 # sed -i "s/disabled='.*'/disabled='0'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 # 修改wifi名称，官方openwrt-23.05和旧的版本要开启，lean要开启
-# sed -i "s/ssid=.*/ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G/g" package/kernel/mac80211/files/lib/wifi/mac80211.sh
+sed -i "s/ssid=.*/ssid=x\n\t\t\tset wireless.default_radio1.ssid=x_5G/g" package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 修改wifi名称，官方openwrt-24.10和新的版本要开启
 # sed -i "s/ssid='.*'/ssid='x'\nset wireless.default_radio1.ssid='x_5G'/g" package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
 # 默认开启KV，lean要开启,
-#  sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+# sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_radio${devidx}.key=12345678\n\t\t\tset wireless.default_radio${devidx}.ieee80211k=1\n\t\t\tset wireless.default_radio${devidx}.ieee80211v=1\n\t\t\tset wireless.default_radio${devidx}.wnm_sleep_mode=1\n\t\t\tset wireless.default_radio${devidx}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 默认开启KV，官方openwrt-23.05和旧的版本要开启
 # sed -i 's/ncryption=.*/ncryption=psk2+ccmp\n\t\t\tset wireless.default_${name}.key=12345678\n\t\t\tset wireless.default_${name}.ieee80211k=1\n\t\t\tset wireless.default_${name}.wnm_sleep_mode=1\n\t\t\tset wireless.default_${name}.wnm_sleep_mode_no_keys=1\n\t\t\tset wireless.default_${name}.bss_transition=1/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 # 默认开启kv，官方openwrt-24.10和新的版本要开启
@@ -55,21 +58,26 @@ sed -i '/99999/d' package/lean/default-settings/files/zzz-default-settings
 # sed -i "/period/s/'.*'/'4h'/" feeds/packages/utils/watchcat/files/watchcat.config
 # sed -i "/pinghosts/s/'.*'/'qq.com'\n\toption pingperiod '2h'/" feeds/packages/utils/watchcat/files/watchcat.config
 # WiFi访客插件设置
-sed -i 's/Guest-WiFi/访客/' feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
-sed -i "/encryption/s/'.*'/'none'/" feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
+# sed -i 's/Guest-WiFi/访客/' feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
+# sed -i "/encryption/s/'.*'/'none'/" feeds/luci/applications/luci-app-guest-wifi/root/etc/config/guest-wifi
 
 # 删除插件
 # rm -rf feeds/packages/multimedia/UnblockNeteaseMusic
 
 cat << EOF > package/base-files/files/etc/uci-defaults/99-custom
 uci -q batch << EOI
+# 设置DHCP 服务器发分配地址
 set dhcp.lan.start='50'
 set dhcp.lan.limit='205'
+# 设置wan默认为pppoe拨号和LCP 响应
 set network.wan.proto=pppoe
 set network.wan.keepalive='2 120'
+# 删除wan6，官方Op用
 # delete network.wan6
+# 设置wan6为静态ip
 # set network.wan6.proto='static'
 # set network.wan6.ipaddr='192.168.1.11/24'
+# 开放防火墙端口
 set firewall.Download='rule'
 set firewall.Download.src='wan'
 set firewall.Download.dest='lan'
@@ -77,6 +85,69 @@ set firewall.Download.name='Download'
 set firewall.Download.dest_port='56681 56682 56683'
 set firewall.Download.family='ipv6'
 set firewall.Download.target='ACCEPT'
+# 开启硬件流量卸载
+# set firewall.@defaults[-1].flow_offloading='1'
+# set firewall.@defaults[-1].flow_offloading_hw='1'
+EOI
+exit 0
+EOF
+
+cat << EOF > package/base-files/files/etc/uci-defaults/98-custom
+WIFI_DEV="\$(uci get wireless.@wifi-iface[0].device)"
+uci -q batch << EOI
+set network.guest_dev='device'
+set network.guest_dev.type='bridge'
+set network.guest_dev.name='br-guest'
+set network.guest_dev.bridge_empty='1'
+set network.guest='interface'
+set network.guest.proto='static'
+set network.guest.device='br-guest'
+set network.guest.ipaddr='192.168.4.1/24'
+set network.guest.ip6assign='64'
+set wireless.guest='wifi-iface'
+set wireless.guest.device="\${WIFI_DEV}"
+set wireless.guest.mode='ap'
+set wireless.guest.network='guest'
+set wireless.guest.ssid='访客'
+set wireless.guest.encryption='none'
+set wireless.guest.isolate='1'
+set dhcp.guest='dhcp'
+set dhcp.guest.interface='guest'
+set dhcp.guest.start='20'
+set dhcp.guest.limit='235'
+set dhcp.guest.leasetime='2h'
+set dhcp.guest.ra='server'
+set dhcp.guest.dhcpv6='server'
+add_list dhcp.guest.ra_flags='managed-config'
+add_list dhcp.guest.ra_flags='other-config'
+set firewall.guest="zone"
+set firewall.guest.name="guest"
+set firewall.guest.network="guest"
+set firewall.guest.input="REJECT"
+set firewall.guest.output="ACCEPT"
+set firewall.guest.forward="REJECT"
+set firewall.guest_wan="forwarding"
+set firewall.guest_wan.src="guest"
+set firewall.guest_wan.dest="wan"
+set firewall.guest_dns="rule"
+set firewall.guest_dns.src="guest"
+set firewall.guest_dns.name="Allow-DNS-Guest"
+set firewall.guest_dns.dest_port="53"
+set firewall.guest_dns.target="ACCEPT"
+set firewall.guest_dhcp="rule"
+set firewall.guest_dhcp.src="guest"
+set firewall.guest_dhcp.name="Allow-DHCP-Guest"
+set firewall.guest_dhcp.proto="udp"
+set firewall.guest_dhcp.dest_port="67"
+set firewall.guest_dhcp.family="ipv4"
+set firewall.guest_dhcp.target="ACCEPT"
+set firewall.guest_dhcp6="rule"
+set firewall.guest_dhcp6.src="guest"
+set firewall.guest_dhcp6.name="Allow-DHCPv6-Guest"
+set firewall.guest_dhcp6.proto="udp"
+set firewall.guest_dhcp6.dest_port="547"
+set firewall.guest_dhcp6.family="ipv6"
+set firewall.guest_dhcp6.target="ACCEPT"
 EOI
 exit 0
 EOF
@@ -127,10 +198,6 @@ EOF
 
 echo -n "
 [YAML]
-dns:
-  proxy-server-nameserver:
-  - https://1.12.12.12/dns-query
-  - https://223.5.5.5/dns-query
 rule-providers:
   zl: {type: http, interval: 3000000, path: "./zl.yaml", behavior: classical, format: yaml, url: https://drive.google.com/uc?export=download&id=1butd66v2_DIo1a7jQtulrjQtGzqtQP0e}
   us: {type: http, interval: 3000000, path: "./us.yaml", behavior: classical, format: yaml, url: https://drive.google.com/uc?export=download&id=1Uy5stkch5asKQKRYcXn4l7G_B5_DmlLD}
@@ -139,7 +206,7 @@ rule-providers:
   hk: {type: http, interval: 3000000, path: "./hk.yaml", behavior: classical, format: yaml, url: https://drive.google.com/uc?export=download&id=16amTfllSThooGG0QHdsxYzrvQNo_88kN}
   dll: {type: http, interval: 3000000, path: "./dll.yaml", behavior: classical, format: yaml, url: https://drive.google.com/uc?export=download&id=1LoGqcs5T8E8fpQzpmfp_5SWPOtgAquNM}
   dl: {type: http, interval: 3000000, path: "./dl.yaml", behavior: classical, format: yaml, url: https://drive.google.com/uc?export=download&id=1s4uRnhGYqfbVUOjEuUR0wsOdJ_0M6Tk3}
-" >> feeds/openclash/luci-app-openclash/root/etc/openclash/overwrite/rule
+" > feeds/openclash/luci-app-openclash/root/etc/openclash/overwrite/rule
 
 echo '
 "rule-set:us,sg,tw,hk,dll,dl": [https://1.12.12.12/dns-query, https://223.5.5.5/dns-query]
@@ -147,6 +214,10 @@ echo '
 
 echo 'rule-set:us,sg,tw,hk,dll,dl
 geosite:gfw' > feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_fake_filter.list
+
+echo '
+xn--ngstr-lra8j.com
+services.googleapis.cn' >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
 echo '
 - RULE-SET,zl,DIRECT
