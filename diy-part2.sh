@@ -82,12 +82,16 @@ exit 0
 EOF
 
 # Clash配置
-# 绕过服务器地址，绕过中国大陆 IP，UDP 流量转发，绕过中国大陆 IPv6，设置默认面板，自动更新 GeoIP MMDB 数据库，自动更新 GeoSite 数据库，自动更新大陆白名单，启用 TCP 并发，关闭流量（域名）探测
-sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption default_dashboard 'zashboard'\n\toption geo_auto_update '1'\n\toption geo_update_week_time '1'\n\toption geo_update_day_time '5'\n\toption geosite_auto_update '1'\n\toption geosite_update_week_time '1'\n\toption geosite_update_day_time '5'\n\toption chnr_auto_update '1'\n\toption chnr_update_week_time '1'\n\toption chnr_update_day_time '5'\n\toption enable_tcp_concurrent '1'\n\toption enable_meta_sniffer '0'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# 绕过服务器地址，绕过指定区域 IP，UDP 流量转发，绕过指定区域 IPv6，自动更新 GeoIP MMDB 数据库，自动更新 GeoSite 数据库，自动更新大陆白名单，启用 TCP 并发，启用统一延迟
+sed -i "/config openclash/a\\\toption skip_proxy_address '1'\n\toption china_ip_route '1'\n\toption enable_v6_udp_proxy '1'\n\toption china_ip6_route '1'\n\toption geo_auto_update '1'\n\toption geo_update_week_time '1'\n\toption geo_update_day_time '5'\n\toption geosite_auto_update '1'\n\toption geosite_update_week_time '1'\n\toption geosite_update_day_time '5'\n\toption chnr_auto_update '1'\n\toption chnr_update_week_time '1'\n\toption chnr_update_day_time '5'\n\toption enable_tcp_concurrent '1'\n\toption enable_unified_delay '1'" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 使用 Redir-Host 模式
-# sed -i "s/fake-ip/redir-host/g" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+sed -i "s/fake-ip/redir-host/g" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 仅允许常用端口流量，Redir-Host 模式才有
-# sed -i "/common_ports/s/'.*'/'21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+sed -i "/common_ports/s/'.*'/'21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 2197 5222 5223 5228 5229 5230 8080 8443 8880 8888 8889'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# 中国大陆域名数据源，Fake-IP 模式才有
+sed -i "/china_ip_route_domain_source/s/'.*'/'geosite'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# 设置默认面板
+sed -i "/default_dashboard/s/'.*'/'zashboard'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # IPv6 流量代理
 sed -i "/ipv6_enable/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 允许 IPv6 类型 DNS 解析
@@ -102,10 +106,10 @@ sed -i "/smart_enable/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/c
 sed -i "/enable_custom_dns/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 与 DNS 服务器的连接遵循配置文件中的规则
 # sed -i "/respect_rules/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
-# Fake-IP-Filter
-sed -i "s/fakeip_filter '.*'/fakeip_filter '1'\n\toption custom_fakeip_filter_mode 'whitelist'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+# Fake-IP-Filter，Fake-IP 模式才有
+# sed -i "s/fakeip_filter '.*'/fakeip_filter '1'\n\toption custom_fakeip_filter_mode 'whitelist'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # Nameserver-Policy
-# sed -i "/custom_name_policy/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
+sed -i "/custom_name_policy/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 # 自定义规则
 sed -i "/enable_custom_clash_rules/s/'.*'/'1'/" feeds/openclash/luci-app-openclash/root/etc/config/openclash
 
@@ -121,14 +125,37 @@ EOI
 exit 0
 EOF
 
-# echo '
-# "rule-set:us,sg,tw,hk,dll,dl": [1.1.1.1, 8.8.8.8, 9.9.9.9, 208.67.222.222]
-# "geosite:gfw": [1.1.1.1, 8.8.8.8, 9.9.9.9, 208.67.222.222]' >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
+echo -n "
+[YAML]
+dns:
+  proxy-server-nameserver:
+  - https://1.12.12.12/dns-query
+  - https://223.5.5.5/dns-query
+rule-providers:
+  zl: {type: http, interval: 3000000, path: "./zl.yaml", behavior: classical, format: yaml, url: https://drive.google.com/uc?export=download&id=1butd66v2_DIo1a7jQtulrjQtGzqtQP0e}
+  us: {type: http, interval: 3000000, path: "./us.yaml", behavior: classical, format: yaml, url: https://drive.google.com/uc?export=download&id=1Uy5stkch5asKQKRYcXn4l7G_B5_DmlLD}
+  sg: {type: http, interval: 3000000, path: "./sg.yaml", behavior: classical, format: yaml, url: https://drive.google.com/uc?export=download&id=1TaAQ-AX1vcKFzJgBwlk3nWUpRyX45Qjo}
+  tw: {type: http, interval: 3000000, path: "./tw.yaml", behavior: classical, format: yaml, url: https://drive.google.com/uc?export=download&id=1KkGmwtpONKaE2no6RqiTzCnR39IG-1NH}
+  hk: {type: http, interval: 3000000, path: "./hk.yaml", behavior: classical, format: yaml, url: https://drive.google.com/uc?export=download&id=16amTfllSThooGG0QHdsxYzrvQNo_88kN}
+  dll: {type: http, interval: 3000000, path: "./dll.yaml", behavior: classical, format: yaml, url: https://drive.google.com/uc?export=download&id=1LoGqcs5T8E8fpQzpmfp_5SWPOtgAquNM}
+  dl: {type: http, interval: 3000000, path: "./dl.yaml", behavior: classical, format: yaml, url: https://drive.google.com/uc?export=download&id=1s4uRnhGYqfbVUOjEuUR0wsOdJ_0M6Tk3}
+" >> feeds/openclash/luci-app-openclash/root/etc/openclash/overwrite/rule
+
+echo '
+"rule-set:us,sg,tw,hk,dll,dl": [https://1.12.12.12/dns-query, https://223.5.5.5/dns-query]
+"geosite:gfw": [https://1.12.12.12/dns-query, https://223.5.5.5/dns-query]' >> feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list
 
 echo 'rule-set:us,sg,tw,hk,dll,dl
 geosite:gfw' > feeds/openclash/luci-app-openclash/root/etc/openclash/custom/openclash_custom_fake_filter.list
 
 echo '
+- RULE-SET,zl,DIRECT
+- RULE-SET,us,美国
+- RULE-SET,sg,新加坡
+- RULE-SET,tw,台湾
+- RULE-SET,hk,香港
+- RULE-SET,dll,大流量
+- RULE-SET,dl,Proxy
 - GEOSITE,youtube,YouTube
 - GEOSITE,gfw,Proxy
 - GEOIP,twitter,Proxy,no-resolve
