@@ -17,7 +17,7 @@
 # sed -i '/routing/c\src-git routing https://github.com/coolsnowwolf/routing^160eae1216c166153f1c0d303f41f33ca0032c2c' feeds.conf.default
 
 # 切换为 lua
-sed -i '/luci/d;1a src-git luci https://github.com/coolsnowwolf/luci.git;master' feeds.conf.default
+# sed -i '/luci/d;1a src-git luci https://github.com/coolsnowwolf/luci.git;master' feeds.conf.default
 
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {
